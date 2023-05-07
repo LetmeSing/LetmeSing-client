@@ -6,12 +6,46 @@
     tools:context=".MyListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="MY LIST"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="34sp" />
+        android:orientation="vertical">
 
+        <ListView
+            android:id="@+id/listview_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_song"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:hint="노래 이름"
+                android:text="Test 노래" />
+
+            <EditText
+                android:id="@+id/editText_singer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:hint="가수 이름"
+                android:text="Test 가수" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="Add new song" />
+    </LinearLayout>
 </FrameLayout>
