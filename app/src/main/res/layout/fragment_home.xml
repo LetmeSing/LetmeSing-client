@@ -89,5 +89,11 @@
                     android:src="@drawable/ic_arrow_right_24"/>
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_retrofit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"/>
     </LinearLayout>
 </FrameLayout>
