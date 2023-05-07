@@ -5,13 +5,89 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="HOME"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="34sp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="10dp"
+            android:text="오늘의 TOP 1"
+            android:textSize="20dp"
+            android:textColor="#FF000000"
+            android:layout_gravity="left"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:background="@drawable/layout_backgound_round">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="25dp"
+                    android:src="@drawable/ic_ditto_newjeans"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ditto_test"
+                        android:textSize="30dp"
+                        android:textColor="#FFFFFFFF"/>
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NewJeans_test"
+                        android:textSize="20dp"
+                        android:textColor="#FF8B8B8B"/>
+                </LinearLayout>
+            </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="#FFFFFFFF"
+                android:layout_gravity="center_horizontal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="더 많은 곡 보러가기"
+                    android:textSize="15dp"
+                    android:textColor="#FFFFF6C6"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/ic_arrow_right_24"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
