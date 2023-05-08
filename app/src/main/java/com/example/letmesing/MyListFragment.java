@@ -46,8 +46,8 @@ public class MyListFragment extends Fragment  {
         itemList.add(new FavoriteItem("노오오오래이름8", "가아아아아수8"));
 
         lv_custom = (ListView) rootView.findViewById(R.id.listview_custom); // list view 연결
-        customAdapter = new CustomAdapter(getContext(), itemList);     // 생성한 data 로 adapter 생성
-        lv_custom.setAdapter(customAdapter);                                // adapter 연결
+        customAdapter = new CustomAdapter(getContext(), itemList); // 생성한 data 로 adapter 생성
+        lv_custom.setAdapter(customAdapter); // adapter 연결
 
         lv_custom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
