@@ -31,7 +31,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         Place place = placeList.get(position);
         holder.titleTextView.setText(place.getName());
         holder.addressTextView.setText(place.getAddress());
-        holder.placeImageView.setImageResource(place.getPhotoResId());
+        //holder.placeImageView.setImageResource(place.getPhotoResId());
 
     }
 

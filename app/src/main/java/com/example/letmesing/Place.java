@@ -5,14 +5,25 @@ import com.google.android.gms.maps.model.LatLng;
 public class Place {
     private String name;
     private String address;
-    private int photoResId;
-    private LatLng latLng;
+    private double latitude;
+    private double longitude;
+    private int remainingSeat;
+    private int totalSeat;
 
-    public Place(String name, String address, int photoResId, LatLng latLng) {
+    public Place(String name, String address, int remainingSeat, int totalSeat, double latitude, double longitude) {
         this.name = name;
         this.address = address;
-        this.photoResId = photoResId;
-        this.latLng = latLng;
+        this.remainingSeat = remainingSeat;
+        this.totalSeat = totalSeat;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Place(String name,  String address, int remainingSeat, int totalSeat){
+        this.name = name;
+        this.address = address;
+        this.remainingSeat = remainingSeat;
+        this.totalSeat = totalSeat;
     }
 
     public String getName() {
@@ -23,11 +34,19 @@ public class Place {
         return address;
     }
 
-    public int getPhotoResId() {
-        return photoResId;
+    public double getLatitude(){
+        return latitude;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    public double getLongitude(){
+        return longitude;
+    }
+
+    public int getRemainingSeat(){
+        return remainingSeat;
+    }
+
+    public int getTotalSeat(){
+        return totalSeat;
     }
 }

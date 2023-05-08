@@ -10,7 +10,9 @@ public class RetrofitClient {
 //    private static final String BASE_URL = "https://jsonplaceholder.typicode.com/";
     private static final String BASE_URL = "http://letmesing.kro.kr:8000/";
 
-    public static Retrofit_interface getApiService(){   return getInstance().create(Retrofit_interface.class);  }
+    public static Retrofit_interface getApiService(){
+        return getInstance().create(Retrofit_interface.class);
+    }
 
     private static Retrofit getInstance(){
         Gson gson = new GsonBuilder().setLenient().create();
