@@ -2,6 +2,9 @@ package com.example.letmesing;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +21,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
     final String TAG = this.getClass().getSimpleName();
 
-    FrameLayout home_ly;
+    FrameLayout ly_main;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -32,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.tab_home); //맨 처음 시작할 탭 설정
     }
     private void init() {
-        home_ly = findViewById(R.id.home_ly);
+        ly_main = findViewById(R.id.layout_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
-
     private void SettingListener() {
         //선택 리스너 등록
         bottomNavigationView.setOnItemSelectedListener(new TabSelectedListener());
@@ -46,19 +48,20 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.tab_home: {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.home_ly, new HomeFragment())
+                            .replace(R.id.layout_main, new HomeFragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_list: {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.home_ly, new MyListFragment())
+//                            .replace(R.id.layout_main, new MyListFragment())
+                            .replace(R.id.layout_main, new AlbumFragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_user: {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.home_ly, new UserFragment())
+                            .replace(R.id.layout_main, new UserFragment())
                             .commit();
                     return true;
                 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
-    retrofit2.Call<data_model> call;
+    retrofit2.Call<DataModel> call;
     TextView tv_retrofit;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,12 +27,13 @@ public class HomeFragment extends Fragment {
 
         // retrofit 코드 시작
         tv_retrofit = (TextView) rootView.findViewById(R.id.textView_retrofit);
-        call = retrofit_client.getApiService().test_api_get("1");
-        call.enqueue(new Callback<data_model>(){
+//        call = RetrofitClient.getApiService().test_api_get("1");
+        call = RetrofitClient.getApiService().test_api_get("1");
+        call.enqueue(new Callback<DataModel>(){
             //콜백 받는 부분
             @Override
-            public void onResponse(retrofit2.Call<data_model> call, Response<data_model> response) {
-                data_model result = response.body();
+            public void onResponse(retrofit2.Call<DataModel> call, Response<DataModel> response) {
+                DataModel result = response.body();
                 String str;
                 str= result.getId() +"\n"+
                         result.getName()+"\n"+
@@ -45,7 +45,8 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<data_model> call, Throwable t) {
+            public void onFailure(retrofit2.Call<DataModel> call, Throwable t) {
+                tv_retrofit.setText("onFailure: DB noresponse\n"+t.getMessage());
             }
         }); // retrofit 코드 종료
 

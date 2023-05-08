@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends ArrayAdapter {
-
+//  선호 목록의 customListview 를 제작하기위한 customAdapter
     private Context context;
     private List list;
 
