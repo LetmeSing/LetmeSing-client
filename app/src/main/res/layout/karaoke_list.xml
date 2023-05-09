@@ -4,12 +4,6 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/placeImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,6 +24,12 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#888888" />
+
+        <TextView
+            android:id="@+id/remainingSeatView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize = "14sp"  />
 
     </LinearLayout>
 

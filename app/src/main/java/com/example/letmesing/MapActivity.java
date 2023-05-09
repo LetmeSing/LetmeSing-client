@@ -1,11 +1,13 @@
 package com.example.letmesing;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +33,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private List<Place> placeList;
     private RecyclerView recyclerView;
     private PlaceAdapter placeAdapter;
-    private Call<List<Place>> call;
 
 
     @Override
@@ -42,6 +43,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // 지도 fragment를 가져와서 비동기적으로 맵을 준비합니다.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
 
@@ -49,15 +51,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         placeList = new ArrayList<>();
 
         // Retrofit을 사용하여 API 호출
-        call = RetrofitClient.getApiService().seat_api_get("1");
+        Call<List<Place>> call = RetrofitClient.getApiService().seat_api_get();
         call.enqueue(new Callback<List<Place>>() {
             @Override
-            public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
+            public void onResponse(@NonNull Call<List<Place>> call, @NonNull Response<List<Place>> response) {
                 if (response.isSuccessful()) {
                     // 서버에서 받은 장소 목록을 가져옴
                     placeList = response.body();
 
                     // 마커 생성 및 추가
+                    assert placeList != null;
                     for (Place place : placeList) {
                         double latitude = place.getLatitude();
                         double longitude = place.getLongitude();
@@ -67,6 +70,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .title(place.getName())
                                 .snippet(place.getAddress());
                         Marker marker = mMap.addMarker(markerOptions);
+                        assert marker != null;
                         marker.setTag(place);
                     }
 
@@ -82,7 +86,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
 
             @Override
-            public void onFailure(Call<List<Place>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Place>> call, @NonNull Throwable t) {
                 // API 호출 실패 처리
             }
         });
@@ -100,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     //Place place3 = new Place("잇츠코인노래방", "서울특별시 동작구 흑석동 195-17번지 3층", R.drawable.karaoke3, latLng3);
                     //    placeList.add(place3);
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         //지도초기 위치 설정
@@ -113,17 +117,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // 정보창 인터페이스
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
-            public View getInfoWindow(Marker marker) {
+            public View getInfoWindow(@NonNull Marker marker) {
                 return null; // 기본 정보창 사용
             }
 
             @Override
-            public View getInfoContents(Marker marker) {
+            public View getInfoContents(@NonNull Marker marker) {
                 // 커스텀 정보창을 위한 View 객체 생성
-                View infoWindowView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+                @SuppressLint("InflateParams") View infoWindowView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
 
                 // View 내부의 요소들을 찾아옴
-                ImageView placeImageView = infoWindowView.findViewById(R.id.placeImageView);
+                //ImageView placeImageView = infoWindowView.findViewById(R.id.placeImageView);
                 TextView titleTextView = infoWindowView.findViewById(R.id.titleTextView);
                 TextView snippetTextView = infoWindowView.findViewById(R.id.snippetTextView);
 

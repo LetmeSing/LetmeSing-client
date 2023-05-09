@@ -9,6 +9,9 @@ public class Place {
     private double longitude;
     private int remainingSeat;
     private int totalSeat;
+    private String callNumber;
+    private double star;
+    private int waiting;
 
     public Place(String name, String address, int remainingSeat, int totalSeat, double latitude, double longitude) {
         this.name = name;
@@ -17,13 +20,6 @@ public class Place {
         this.totalSeat = totalSeat;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public Place(String name,  String address, int remainingSeat, int totalSeat){
-        this.name = name;
-        this.address = address;
-        this.remainingSeat = remainingSeat;
-        this.totalSeat = totalSeat;
     }
 
     public String getName() {
