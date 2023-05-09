@@ -21,5 +21,4 @@ public interface Retrofit_interface {
     @GET("api/seat/")
         Call<List<Place>> seat_api_get();
 
-
 }
