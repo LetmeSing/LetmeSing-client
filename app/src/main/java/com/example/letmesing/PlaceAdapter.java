@@ -13,9 +13,9 @@ import java.util.List;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder> {
 
-    private List<Place> placeList;
+    private List<TempPlace> placeList;
 
-    public PlaceAdapter(List<Place> placeList) {
+    public PlaceAdapter(List<TempPlace> placeList) {
         this.placeList = placeList;
     }
 
@@ -28,12 +28,11 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
 
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
-        Place place = placeList.get(position);
-        holder.titleTextView.setText(place.getName());
-        holder.addressTextView.setText(place.getAddress());
-        holder.remainingSeatView.setText(place.getRemainingSeat());
+        TempPlace tempPlace = placeList.get(position);
+        holder.titleTextView.setText(tempPlace.getName());
+        holder.addressTextView.setText(tempPlace.getAddress());
+        holder.remainingSeatView.setText(String.valueOf(tempPlace.getRemainingSeat()));
         //holder.placeImageView.setImageResource(place.getPhotoResId());
-
     }
 
     @Override
@@ -42,14 +41,12 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
     }
 
     public class PlaceViewHolder extends RecyclerView.ViewHolder {
-        //private ImageView placeImageView;
         private TextView titleTextView;
         private TextView addressTextView;
         private TextView remainingSeatView;
 
         public PlaceViewHolder(@NonNull View itemView) {
             super(itemView);
-            //placeImageView = itemView.findViewById(R.id.placeImageView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             addressTextView = itemView.findViewById(R.id.snippetTextView);
             remainingSeatView = itemView.findViewById(R.id.remainingSeatView);

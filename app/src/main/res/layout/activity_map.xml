@@ -35,7 +35,6 @@
         android:background="@android:color/white"
         android:padding="16dp"
         android:clipToPadding="false"
-        android:elevation="8dp"
-        />
+        android:elevation="8dp" />
 
 </LinearLayout>

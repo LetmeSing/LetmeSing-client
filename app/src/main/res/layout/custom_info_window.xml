@@ -1,12 +1,12 @@
 <!-- custom_info_window.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -14,15 +14,16 @@
 
     <TextView
         android:id="@+id/snippetTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#808080"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/remainingSeatView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#808080"
         android:textSize="14sp"/>
 
 
