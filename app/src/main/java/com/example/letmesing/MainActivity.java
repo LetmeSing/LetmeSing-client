@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 case R.id.tab_map: {
-                    Intent myIntent = new Intent(MainActivity.this, MapActivity.class);
+                    Intent myIntent = new Intent(MainActivity.this, TempMapActivity.class);
                     startActivity(myIntent);
 //                    finish();
                     return true;

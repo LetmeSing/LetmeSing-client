@@ -16,7 +16,7 @@ public class Place {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("remaingSeat")
+    @SerializedName("remainingSeat")
     @Expose
     private int remainingSeat;
     @SerializedName("totalSeat")
