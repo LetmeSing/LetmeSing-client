@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,17 +22,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private List<TempPlace> placeList;
     private RecyclerView recyclerView;
     private PlaceAdapter placeAdapter;
+    // Retrofit 객체와 API 서비스 선언
+    private Retrofit_interface retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        // Retrofit 인터페이스를 가져옴
+        retrofitService = RetrofitClient.getApiService();
 
         // 지도 fragment를 가져와서 비동기적으로 맵을 준비합니다.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -42,7 +52,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // 장소 목록 초기화
         placeList = new ArrayList<>();
 
-        // 더미 데이터
+        // API 요청 보내기
+        getPlaceListFromServer();
+    }
+
+/*        // 더미 데이터
         LatLng latLng1 = new LatLng(37.507063, 126.958612);
         TempPlace place1 = new TempPlace("슈퍼스타코인노래연습장", "서울특별시 동작구 흑석동 195-30번지", 37.507063, 126.958612, 18);
         placeList.add(place1);
@@ -54,6 +68,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng latLng3 = new LatLng(37.507021, 126.958560);
         TempPlace place3 = new TempPlace("잇츠코인노래방", "서울특별시 동작구 흑석동 195-17번지 3층", 37.507021, 126.958560, 20);
         placeList.add(place3);
+*/
+    private void getPlaceListFromServer() {
+        Call<List<TempPlace>> call = retrofitService.seat_api_get();
+        call.enqueue(new Callback<List<TempPlace>>() {
+            @Override
+            public void onResponse(Call<List<TempPlace>> call, Response<List<TempPlace>> response) {
+                if (response.isSuccessful()) {
+                    // API 응답이 성공적으로 도착한 경우 장소 목록을 가져와서 처리
+                    placeList = response.body();
+                    placeAdapter.setPlaceList(placeList); // 어댑터에 장소 목록 설정
+                    placeAdapter.notifyDataSetChanged(); // RecyclerView 어댑터에 변경 내용을 알려줌
+
+                    // 맵이 준비되었을 때 마커 추가
+                    if (mMap != null) {
+                        addMarkersToMap();
+                    }
+                } else {
+                    // API 요청이 실패한 경우에 대한 처리
+                    Toast.makeText(MapActivity.this, "Failed to fetch place data", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<TempPlace>> call, Throwable t) {
+                // API 요청 실패에 대한 처리
+                Toast.makeText(MapActivity.this, "Failed to connect to the server", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -64,17 +105,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng karaoke0 = new LatLng(37.507063, 126.958612);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(karaoke0, 18));
 
-        // 마커 생성 및 추가
-        for (TempPlace tempPlace : placeList) {
-            double latitude = tempPlace.getLatitude();
-            double longitude = tempPlace.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(latLng)
-                    .title(tempPlace.getName())
-                    .snippet(tempPlace.getAddress());
-            mMap.addMarker(markerOptions).setTag(tempPlace);
-        }
+        // 서버에서 받은 장소 목록으로 마커 추가
+        addMarkersToMap();
 
         // 정보창 인터페이스
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -103,7 +135,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     // TempPlace 객체에서 이름, 주소, 잔여 좌석 수를 가져와서 View에 표시
                     titleTextView.setText(tempPlace.getName());
                     snippetTextView.setText(tempPlace.getAddress());
-                    remainingSeatTextView.setText(String.valueOf(tempPlace.getRemainingSeat()));
+                    // "여석: " 텍스트 추가
+                    remainingSeatTextView.setText("여석: "+String.valueOf(tempPlace.getRemainingSeat()));
                 }
 
                 return infoWindowView;
@@ -113,13 +146,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // RecyclerView 초기화
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        PlaceAdapter placeAdapter = new PlaceAdapter(placeList);
+        placeAdapter = new PlaceAdapter(placeList); // 로컬 변수로 수정
         recyclerView.setAdapter(placeAdapter);
 
         // 마커 클릭 이벤트 처리
         mMap.setOnMarkerClickListener(this);
     }
 
+private void addMarkersToMap(){
+    //기존 마커 제거
+    mMap.clear();
+
+    // 마커 생성 및 추가
+    for (TempPlace tempPlace : placeList) {
+        double latitude = tempPlace.getLatitude();
+        double longitude = tempPlace.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(tempPlace.getName())
+                .snippet(tempPlace.getAddress());
+        mMap.addMarker(markerOptions).setTag(tempPlace);
+    }
+}
     @Override
     public boolean onMarkerClick(final Marker marker) {
         // 마커를 클릭했을 때 팝업 정보 띄우기
