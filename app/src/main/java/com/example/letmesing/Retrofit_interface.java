@@ -19,6 +19,6 @@ public interface Retrofit_interface {
         Call<List<DataModel>> my_api_get();
 
     @GET("api/seat/")
-        Call<List<Place>> seat_api_get();
+        Call<List<TempPlace>> seat_api_get();
 
 }

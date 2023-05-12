@@ -3,7 +3,6 @@ package com.example.letmesing;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +18,10 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         this.placeList = placeList;
     }
 
+    public void setPlaceList(List<TempPlace> placeList) {
+        this.placeList = placeList;
+    }
+
     @NonNull
     @Override
     public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,7 +34,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         TempPlace tempPlace = placeList.get(position);
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
-        holder.remainingSeatView.setText(String.valueOf(tempPlace.getRemainingSeat()));
+        holder.remainingSeatView.setText("여석: " + String.valueOf(tempPlace.getRemainingSeat()));
         //holder.placeImageView.setImageResource(place.getPhotoResId());
     }
 
