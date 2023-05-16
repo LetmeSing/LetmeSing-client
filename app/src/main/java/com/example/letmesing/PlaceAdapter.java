@@ -1,8 +1,10 @@
 package com.example.letmesing;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +23,14 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
     public void setPlaceList(List<TempPlace> placeList) {
         this.placeList = placeList;
     }
+    private OnItemClickListener itemClickListener;
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(int position, TempPlace place);
+    }
     @NonNull
     @Override
     public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,12 +39,21 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlaceViewHolder holder, @SuppressLint("RecyclerView") int position) {
         TempPlace tempPlace = placeList.get(position);
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
         holder.remainingSeatView.setText("여석: " + String.valueOf(tempPlace.getRemainingSeat()));
         //holder.placeImageView.setImageResource(place.getPhotoResId());
+        // 아이템 클릭 이벤트 처리
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(position, tempPlace);
+                }
+            }
+        });
     }
 
     @Override
@@ -55,4 +73,6 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
             remainingSeatView = itemView.findViewById(R.id.remainingSeatView);
         }
     }
+
+
 }

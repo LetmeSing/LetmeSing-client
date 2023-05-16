@@ -1,6 +1,8 @@
 package com.example.letmesing;
 
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +24,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +60,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // API 요청 보내기
         getPlaceListFromServer();
+
     }
+    private Map<String, Marker> markerMap = new HashMap<>();
+
+    private Marker getMarkerForPlace(int position) {
+        TempPlace place = placeList.get(position);
+        String placeId = place.getId();
+        if (markerMap.containsKey(placeId)) {
+            return markerMap.get(placeId);
+        }
+        return null;
+    }
+
 
 /*        // 더미 데이터
         LatLng latLng1 = new LatLng(37.507063, 126.958612);
@@ -146,33 +164,55 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // RecyclerView 초기화
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        placeAdapter = new PlaceAdapter(placeList); // 로컬 변수로 수정
+        placeAdapter = new PlaceAdapter(placeList); // 객체 생성과 초기화
         recyclerView.setAdapter(placeAdapter);
+
+        // placeAdapter 객체가 생성된 후에 setOnItemClickListener() 호출
+        placeAdapter.setOnItemClickListener(new PlaceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, TempPlace place) {
+                // 선택한 장소의 마커를 가져옴
+                Marker marker = getMarkerForPlace(position);
+                if (marker != null) {
+                    // 마커를 클릭한 것처럼 처리하여 InfoWindow를 표시
+                    marker.showInfoWindow();
+
+                    // 마커가 가운데로 오도록 카메라 이동
+                    LatLng latLng = new LatLng(place.getLatitude(), place.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                }
+            }
+        });
 
         // 마커 클릭 이벤트 처리
         mMap.setOnMarkerClickListener(this);
     }
 
-private void addMarkersToMap(){
-    //기존 마커 제거
-    mMap.clear();
-
-    // 마커 생성 및 추가
-    for (TempPlace tempPlace : placeList) {
-        double latitude = tempPlace.getLatitude();
-        double longitude = tempPlace.getLongitude();
+    private void addMarkerToMap(TempPlace place) {
+        double latitude = place.getLatitude();
+        double longitude = place.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
-                .title(tempPlace.getName())
-                .snippet(tempPlace.getAddress());
-        mMap.addMarker(markerOptions).setTag(tempPlace);
+                .title(place.getName())
+                .snippet(place.getAddress());
+        Marker marker = mMap.addMarker(markerOptions);
+        marker.setTag(place);
+        markerMap.put(place.getId(), marker);
     }
-}
+
+    private void addMarkersToMap() {
+        mMap.clear();
+        for (TempPlace place : placeList) {
+            addMarkerToMap(place);
+        }
+    }
     @Override
     public boolean onMarkerClick(final Marker marker) {
         // 마커를 클릭했을 때 팝업 정보 띄우기
         marker.showInfoWindow();
         return true;
     }
+
+
 }
