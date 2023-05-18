@@ -26,6 +26,14 @@ public class AlbumDM {
     @Expose
     private String member;
 
+    public AlbumDM () {}
+    public AlbumDM (String name, String created_at, String numOfSongs, String description, String member) {
+        this.name = name;
+        this.created_at = created_at;
+        this.numOfSongs = numOfSongs;
+        this.description = description;
+        this.member = member;
+    }
     public String getId(){
         return id;
     }
@@ -51,18 +59,22 @@ class MusicDM {
     @SerializedName("music_id")
     @Expose
     private String id;
-
     @SerializedName("name")
     @Expose
     private String name;
-
     @SerializedName("singer")
     @Expose
     private String singer;
-
     @SerializedName("album")
     @Expose
     private String album;
+
+    public MusicDM () {}
+    public MusicDM (String name, String singer, String album) {
+        this.name = name;
+        this.singer = singer;
+        this.album = album;
+    }
 
     public String getId(){
         return id;
