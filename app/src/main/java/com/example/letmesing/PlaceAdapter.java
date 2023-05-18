@@ -43,7 +43,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         TempPlace tempPlace = placeList.get(position);
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
-        holder.remainingSeatView.setText("여석: " + String.valueOf(tempPlace.getRemainingSeat()));
+        holder.remainingSeatView.setText(String.valueOf(tempPlace.getRemainingSeat()) + "자리");
         //holder.placeImageView.setImageResource(place.getPhotoResId());
         // 아이템 클릭 이벤트 처리
         holder.itemView.setOnClickListener(new View.OnClickListener() {

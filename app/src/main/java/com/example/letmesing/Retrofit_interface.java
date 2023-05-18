@@ -15,7 +15,7 @@ public interface Retrofit_interface {
 
     // DB에 저장된 Album List 전체를 받아오는 함수
     // my_api_get() 은 특정 usr_id 가 아니라 전체 data 를 list<> 형태로 받아옴
-    @GET("api/music/album/")
+    @GET("api/album/")
         Call<List<DataModel>> my_api_get();
 
     @GET("api/seat/")
