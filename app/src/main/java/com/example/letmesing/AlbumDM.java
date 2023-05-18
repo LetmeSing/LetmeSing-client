@@ -3,7 +3,8 @@ package com.example.letmesing;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DataModel {
+public class AlbumDM {
+    //    Album 의 DataModel
 //    serializer db 에 저장된 data 는 row 형태 > 1번 row 를 뽑아줄때 byte 의 나열로 제공됨 > serializer 는 해당 DB 의 row 를 json 형태로 가공하는 method
 //    deSerializer > 반대 작업
     @SerializedName("id")
@@ -42,5 +43,35 @@ public class DataModel {
     }
     public String getMember(){
         return member;
+    }
+}
+
+class MusicDM {
+    //    Music의 DataModel
+    @SerializedName("music_id")
+    @Expose
+    private String id;
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("singer")
+    @Expose
+    private String singer;
+
+    @SerializedName("album")
+    @Expose
+    private String album;
+
+    public String getId(){
+        return id;
+    }
+    public String getName(){  return name;  }
+    public String getSinger(){
+        return singer;
+    }
+    public String getAlbum(){
+        return album;
     }
 }

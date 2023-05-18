@@ -40,24 +40,21 @@ public class AlbumFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_album, container, false);
 
         albumList = new ArrayList<AlbumItem>();
-
-        Call<List<DataModel>> callSync = RetrofitClient.getApiService().my_api_get();
+        Call<List<AlbumDM>> callSync = RetrofitClient.getApiService().album_api_get();
         // api 의 동기적 처리를 위한 임시 thread 생성    Main thread 내에서는 네트워크 통신이 막혀있음 (thread 없이 단순 try-catch 로는 네트워크 통신 사용 불가)
         Thread th_temp = new Thread() {
             public void run() {
-                Response<List<DataModel>> response;
+                Response<List<AlbumDM>> response;
                 {
                     try {
                         response = callSync.execute();
-                        List<DataModel> apiResponse = response.body();
+                        List<AlbumDM> apiResponse = response.body();
                         // for (A:B) >> B 가 empty 할 때 까지 B 에서 차례대로 객체를 꺼내 A 에 넣겠다
-                        for (DataModel album:apiResponse) {
+                        for (AlbumDM album:apiResponse) {
                             AlbumItem temp = new AlbumItem(album.getId(), album.getName(), album.getCreated_at(), album.getNumOfSongs(), album.getDescription(), album.getMember());
                             albumList.add(temp);
-                            Log.v("OnResponse 내부: ", Integer.toString(albumList.size()));
                         }
                     } catch (IOException e) {
-                        Log.v("callAsync", "Exception");
                         throw new RuntimeException(e);
                     }
                 }
@@ -79,6 +76,10 @@ public class AlbumFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Add New Album Clicked", Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                AddAlbumFragment addalbumFragment = new AddAlbumFragment();
+                transaction.replace(R.id.layout_main, addalbumFragment);
+                transaction.addToBackStack(null).commit();
             }
         });
 
@@ -102,8 +103,6 @@ class AlbumItem {
         this.numOfSongs = numOfSongs;
         this.description = description;
         this.member = member;
-
-        Log.v("AlbumItem 객체 생성자", "생성자 종료됨");
     }
 
     public String getId(){
