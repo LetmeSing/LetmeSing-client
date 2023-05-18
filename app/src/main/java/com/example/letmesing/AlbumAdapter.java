@@ -58,18 +58,18 @@ public class AlbumAdapter extends ArrayAdapter {
         viewHolder.tv_numSongs.setText(albumItem.getNumOfSongs());
 
         // clickable 이 달려있는 cardview 를 클릭 시 list fragment 로 frag 전환 + 해당 album의 id 값을 list fragment 에 전달
-        // 구현 필요: 선택된 album 의 id 값을 list Fragment 전달 > 해당 id 값을 가진 Music 들로 구성된 List frag 를 생성
+        // 구현 필요: 선택된 album 의 id 값을 list Fragment 전달 > 해당 id 값을 가진 Music 들로 구성된 List frag 를 생성 >> 생성자로 전달?
         viewHolder.cv_album.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = albumfragment.getActivity().getSupportFragmentManager().beginTransaction();
-                // 확인 필요: 이거 매번 new 로 생성되면 수정한 결과가 반영 안되는거 아닌가? > 아 어차피 DB 에서 받아오는거면 문제없을수도?
-                // + bundle 활용해서 값 전달 구현
+                // 확인 필요: 이거 매번 new 로 생성되면 수정한 결과가 반영 안되는거 아닌가? > 아 어차피 DB 에서 받아오는거면 문제없을수도? > 문제 없더라
+                // + bundle 활용해서 값 전달 구현 필요
                 MyListFragment mylistFragment = new MyListFragment();
                 //main_layout에 homeFragment로 transaction 한다.
                 transaction.replace(R.id.layout_main, mylistFragment);
                 //꼭 commit을 해줘야 바뀐다.
-                transaction.commit();
+                transaction.addToBackStack(null).commit();
                 Toast.makeText(getContext(), albumItem.getId() + "번 ID의 앨범이 클릭되었습니다.",Toast.LENGTH_SHORT).show();
             }
         });

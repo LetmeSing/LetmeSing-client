@@ -90,12 +90,67 @@
             </LinearLayout>
         </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/linearLayout_karaoke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:background="@drawable/layout_backgound_round">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="우리 주변 노래방 찾기"
+                android:textSize="20dp"
+                android:textColor="#FFFFED92"/>
+
+            <ImageView
+                android:id="@+id/imageView_arrow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/ic_arrow_right_24"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_albumList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:background="@drawable/layout_backgound_round">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="나의 앨범 목록"
+                android:textSize="20dp"
+                android:textColor="#FFFFED92"/>
+
+            <ImageView
+                android:id="@+id/imageView_arrow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/ic_arrow_right_24"/>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textView_retrofit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15dp"/>
-
         <TextView
             android:id="@+id/textView_retrofit2"
             android:layout_width="match_parent"
