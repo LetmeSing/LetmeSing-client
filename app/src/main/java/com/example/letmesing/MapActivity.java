@@ -66,6 +66,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // 장소 목록 초기화
         placeList = new ArrayList<>();
 
+        // RecyclerView 초기화
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        placeAdapter = new PlaceAdapter(placeList); // 객체 생성과 초기화
+        recyclerView.setAdapter(placeAdapter);
+
         // API 요청 보내기
         getPlaceListFromServer();
 
@@ -220,11 +226,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        // RecyclerView 초기화
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        placeAdapter = new PlaceAdapter(placeList); // 객체 생성과 초기화
-        recyclerView.setAdapter(placeAdapter);
+
 
         // placeAdapter 객체가 생성된 후에 setOnItemClickListener() 호출
         placeAdapter.setOnItemClickListener(new PlaceAdapter.OnItemClickListener() {
