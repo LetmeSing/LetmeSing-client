@@ -45,7 +45,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private List<TempPlace> placeList;
-    private RecyclerView recyclerView;
     private PlaceAdapter placeAdapter;
     // Retrofit 객체와 API 서비스 선언
     private Retrofit_interface retrofitService;
@@ -72,7 +71,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    private Map<String, Marker> markerMap = new HashMap<>();
+    private final Map<String, Marker> markerMap = new HashMap<>();
 
     private Marker getMarkerForPlace(int position) {
         TempPlace place = placeList.get(position);
@@ -100,8 +99,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void getPlaceListFromServer() {
         Call<List<TempPlace>> call = retrofitService.seat_api_get();
         call.enqueue(new Callback<List<TempPlace>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onResponse(Call<List<TempPlace>> call, Response<List<TempPlace>> response) {
+            public void onResponse(@NonNull Call<List<TempPlace>> call, @NonNull Response<List<TempPlace>> response) {
                 if (response.isSuccessful()) {
                     // API 응답이 성공적으로 도착한 경우 장소 목록을 가져와서 처리
                     placeList = response.body();
@@ -119,7 +119,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
 
             @Override
-            public void onFailure(Call<List<TempPlace>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<TempPlace>> call, @NonNull Throwable t) {
                 // API 요청 실패에 대한 처리
                 Toast.makeText(MapActivity.this, "Failed to connect to the server", Toast.LENGTH_SHORT).show();
             }
@@ -179,7 +179,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             // 지도 초기 위치 설정
             LatLng karaoke0 = new LatLng(37.507075, 126.958615);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(karaoke0, 18));
-            Toast.makeText(MapActivity.this, "카메라를 초기 위치로 이동했습니다.", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(MapActivity.this, "카메라를 초기 위치로 이동했습니다.", Toast.LENGTH_SHORT).show();
         }
         // 서버에서 받은 장소 목록으로 마커 추가
         addMarkersToMap();
@@ -191,6 +191,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return null; // 기본 정보창 사용
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public View getInfoContents(@NonNull Marker marker) {
                 // 커스텀 정보창을 위한 View 객체 생성
@@ -212,7 +213,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     titleTextView.setText(tempPlace.getName());
                     //snippetTextView.setText(tempPlace.getAddress());
                     // "여석: " 텍스트 추가
-                    remainingSeatTextView.setText("여석: "+String.valueOf(tempPlace.getRemainingSeat()));
+                    remainingSeatTextView.setText("여석: " + tempPlace.getRemainingSeat());
                 }
 
                 return infoWindowView;
@@ -220,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
         // RecyclerView 초기화
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         placeAdapter = new PlaceAdapter(placeList); // 객체 생성과 초기화
         recyclerView.setAdapter(placeAdapter);
@@ -255,6 +256,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .title(place.getName())
                 .snippet(place.getAddress());
         Marker marker = mMap.addMarker(markerOptions);
+        assert marker != null;
         marker.setTag(place);
         markerMap.put(place.getId(), marker);
     }
