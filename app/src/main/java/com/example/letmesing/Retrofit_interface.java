@@ -20,16 +20,18 @@ public interface Retrofit_interface {
     // my_api_get() 은 특정 usr_id 가 아니라 전체 data 를 list<> 형태로 받아옴
     @GET("api/album/")
     Call<List<AlbumDM>> album_api_get();
-    @GET("api/album")
+    @GET("api/album/")
     Call<List<AlbumDM>> album_api_get(@Query("id") String id);
 
-    @GET("api/album/music")
+    @GET("api/album/music/")
     Call<List<MusicDM>> music_api_get();
-    @GET("api/album/music")
+    @GET("api/album/music/")
     Call<List<MusicDM>> music_api_get(@Query("album") int album);
 
-//    @POST("need implement")
-//        Call<AlbumDM> album_api_post(@Body AlbumDM album);
+    @POST("api/album/")
+        Call<AlbumDM> album_api_post(@Body AlbumDM album);
+    @POST("api/album/music/")
+        Call<MusicDM> music_api_post(@Body MusicDM music);
 
     @GET("api/seat/")
     Call<List<TempPlace>> seat_api_get();
