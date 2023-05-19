@@ -44,6 +44,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 10.0f; // 10미터
 
     private GoogleMap mMap;
+    private CustomInfoWindowAdapter infoWindowAdapter;
     private List<TempPlace> placeList;
     private PlaceAdapter placeAdapter;
     // Retrofit 객체와 API 서비스 선언
@@ -88,20 +89,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return null;
     }
 
-
-    /*        // 더미 데이터
-            LatLng latLng1 = new LatLng(37.507063, 126.958612);
-            TempPlace place1 = new TempPlace("슈퍼스타코인노래연습장", "서울특별시 동작구 흑석동 195-30번지", 37.507063, 126.958612, 18);
-            placeList.add(place1);
-
-            LatLng latLng2 = new LatLng(37.507340, 126.959159);
-            TempPlace place2 = new TempPlace("비트코인동전노래방", "서울특별시 동작구 흑석동 번지 지층 190-33", 37.507340, 126.959159, 15);
-            placeList.add(place2);
-
-            LatLng latLng3 = new LatLng(37.507021, 126.958560);
-            TempPlace place3 = new TempPlace("잇츠코인노래방", "서울특별시 동작구 흑석동 195-17번지 3층", 37.507021, 126.958560, 20);
-            placeList.add(place3);
-    */
     private void getPlaceListFromServer() {
         Call<List<TempPlace>> call = retrofitService.seat_api_get();
         call.enqueue(new Callback<List<TempPlace>>() {
@@ -156,8 +143,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
         MapStyleOptions styleOptions = MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style);
         googleMap.setMapStyle(styleOptions);
-        // 기본 마커 비활성화
-        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
 
         // 기본 마커 비활성화
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -190,6 +175,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // 서버에서 받은 장소 목록으로 마커 추가
         addMarkersToMap();
 
+        infoWindowAdapter = new CustomInfoWindowAdapter(this);
         // 정보창 인터페이스
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
@@ -205,9 +191,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 // View 내부의 요소들을 찾아옴
                 TextView titleTextView = infoWindowView.findViewById(R.id.titleTextView);
-                //TextView snippetTextView = infoWindowView.findViewById(R.id.snippetTextView);
+                TextView addressTextView = infoWindowView.findViewById(R.id.addressTextView);
                 TextView remainingSeatTextView = infoWindowView.findViewById(R.id.remainingSeatView);
-
+                TextView totalSeatTextView = infoWindowView.findViewById(R.id.totalSeatView);
                 // 마커에 설정된 태그를 가져옴
                 Object tag = marker.getTag();
 
@@ -217,9 +203,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     // TempPlace 객체에서 이름, 주소, 잔여 좌석 수를 가져와서 View에 표시
                     titleTextView.setText(tempPlace.getName());
-                    //snippetTextView.setText(tempPlace.getAddress());
-                    // "여석: " 텍스트 추가
-                    remainingSeatTextView.setText("여석: " + tempPlace.getRemainingSeat());
+                    addressTextView.setText(tempPlace.getAddress());
+                    remainingSeatTextView.setText(String.valueOf(tempPlace.getRemainingSeat()));
+                    totalSeatTextView.setText(String.valueOf(tempPlace.getTotalSeat()));
                 }
 
                 return infoWindowView;

@@ -43,7 +43,9 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         TempPlace tempPlace = placeList.get(position);
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
-        holder.remainingSeatView.setText(String.valueOf(tempPlace.getRemainingSeat()) + "자리");
+        //holder.totalSeatView.setText(String.valueOf(tempPlace.getTotalSeat()) + "자리");
+        holder.remainingSeatView.setText("남은 자리 : " + String.valueOf(tempPlace.getRemainingSeat()));
+
         //holder.placeImageView.setImageResource(place.getPhotoResId());
         // 아이템 클릭 이벤트 처리
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -65,12 +67,15 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         private TextView titleTextView;
         private TextView addressTextView;
         private TextView remainingSeatView;
+        //private TextView totalSeatView;
 
         public PlaceViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             addressTextView = itemView.findViewById(R.id.snippetTextView);
+            //totalSeatView = itemView.findViewById(R.id.totalSeatView);
             remainingSeatView = itemView.findViewById(R.id.remainingSeatView);
+
         }
     }
 
