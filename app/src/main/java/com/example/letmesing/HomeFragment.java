@@ -26,12 +26,12 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     retrofit2.Call<AlbumDM> call;
-    TextView tv_retrofit;
-    TextView tv_retrofit2;
-    ImageView iv_arrow1;
-    ImageView iv_arrow2;
-    LinearLayout ll_karaoke;
-    LinearLayout ll_albumlist;
+    private TextView tv_retrofit;
+    private TextView tv_retrofit2;
+    private ImageView iv_arrow1;
+    private ImageView iv_arrow2;
+    private LinearLayout ll_karaoke;
+    private LinearLayout ll_albumlist;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

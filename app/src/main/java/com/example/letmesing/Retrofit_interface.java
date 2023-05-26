@@ -33,6 +33,11 @@ public interface Retrofit_interface {
     @POST("api/album/music/")
         Call<MusicDM> music_api_post(@Body MusicDM music);
 
+    @POST("api/accounts/register/")
+        Call<RegisterDM> register_api_post(@Body RegisterDM signin);
+    @POST("api/accounts/login/")
+        Call<LoginDM> login_api_post(@Body LoginDM login);
+
     @GET("api/seat/")
     Call<List<TempPlace>> seat_api_get();
 }

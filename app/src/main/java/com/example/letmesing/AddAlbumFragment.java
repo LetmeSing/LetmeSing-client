@@ -20,9 +20,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddAlbumFragment extends Fragment {
-    Button btn_post_album;
-    EditText edtv_ablum_name;
-    EditText edtv_album_description;
+    private Button btn_post_album;
+    private EditText edtv_ablum_name;
+    private EditText edtv_album_description;
 
 
     @Override
@@ -69,10 +69,6 @@ public class AddAlbumFragment extends Fragment {
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().remove(AddAlbumFragment.this).commit();
                 manager.popBackStack();
-
-                // 강제 refresh. 임시용이라 수정 필요함
-//                refresh();
-
             }
         });
         // Inflate the layout for this fragment

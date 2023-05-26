@@ -87,3 +87,65 @@ class MusicDM {
         return album;
     }
 }
+
+class LoginDM {
+    @SerializedName("login_id")
+    @Expose
+    private String login_id;
+
+    @SerializedName("password")
+    @Expose
+    private String password;
+
+    public LoginDM () {}
+    public LoginDM (String login_id, String password) {
+        this.login_id = login_id;
+        this.password = password;
+    }
+
+    public String getLoginid() {
+        return login_id;
+    }
+    public String getPassword() {
+        return password;
+    }
+}
+
+class RegisterDM {
+    @SerializedName("login_id")
+    @Expose
+    private String login_id;
+
+    @SerializedName("password")
+    @Expose
+    private String password;
+
+    @SerializedName("nickname")
+    @Expose
+    private String nickname;
+
+    @SerializedName("is_master")
+    @Expose
+    private String is_master;   // 1: master, 0: normal user
+
+    public RegisterDM () {}
+    public RegisterDM (String login_id, String password, String nickname, String is_master) {
+        this.login_id = login_id;
+        this.password = password;
+        this.nickname = nickname;
+        this.is_master = is_master;
+    }
+
+    public String getLogin_id() {
+        return login_id;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+    public String getIs_master() {
+        return is_master;
+    }
+}
