@@ -43,7 +43,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight ="5dp"
                 android:layout_marginLeft = "5dp"
-                android:background="@drawable/rectangle">
+                android:background="@drawable/shape_rectangle">
 
                 <TextView
                     android:id="@+id/remainingSeatView"
@@ -65,7 +65,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft = "5dp"
-                android:background="@drawable/rectangle">
+                android:background="@drawable/shape_rectangle">
 
                 <TextView
                     android:id="@+id/totalSeatView"

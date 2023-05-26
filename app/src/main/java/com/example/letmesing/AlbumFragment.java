@@ -25,9 +25,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AlbumFragment extends Fragment {
-    Button btn_addAlbum;
-    ArrayList<AlbumItem> albumList;
-    ListView lv_album;
+    private Button btn_addAlbum;
+    private ArrayList<AlbumItem> albumList;
+    private ListView lv_album;
     private static AlbumAdapter albumAdapter;
 
     @Override
