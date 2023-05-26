@@ -2,25 +2,18 @@ package com.example.letmesing;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = this.getClass().getSimpleName();
+    private UserInfo userinfo;    // 현재 userinfo 는 수정할 방법 없음
 
     FrameLayout ly_main;
     BottomNavigationView bottomNavigationView;
@@ -29,7 +22,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "Log");
+
+        // Userinfo 객체 전달 받음
+        Intent myintent = getIntent();
+        if (myintent != null) {
+            userinfo = (UserInfo) myintent.getSerializableExtra("user info");
+        }
 
         init(); //객체 정의
         SettingListener(); //리스너 등록
@@ -56,14 +54,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.tab_list: {
                     getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.layout_main, new MyListFragment())
                             .replace(R.id.layout_main, new AlbumFragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_user: {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.layout_main, new UserFragment())
+                    Bundle mybundle = new Bundle();   // 번들 생성
+                    mybundle.putSerializable("user info", userinfo);  // 데이터 적재
+                    SettingFragment settingFragment = new SettingFragment();    // 프래그먼트 선언
+                    settingFragment.setArguments(mybundle);   // 프래그먼트에 데이터 전달
+                    getSupportFragmentManager().beginTransaction()  // 프래그먼트 화면 띄우기
+                            .replace(R.id.layout_main, settingFragment)
                             .commit();
                     return true;
                 }

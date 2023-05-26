@@ -2,6 +2,7 @@ package com.example.letmesing;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -35,8 +36,13 @@ public interface Retrofit_interface {
 
     @POST("api/accounts/register/")
         Call<RegisterDM> register_api_post(@Body RegisterDM signin);
+
+    // https://th-biglight.tistory.com/11
+    // https://kyome.tistory.com/148
+    // Service 는 Call<T> 를 반환. 서버 API 가 String 을 반환한다면, 클라이언트는 Retrofit 을 통해 Call<String> 을 받게됨
+    // 여기서는 JSon 의 형태로 반환 받음. Object 의 형태로 받아서 Gson 으로 toJson 함수로 가공할 것임.
     @POST("api/accounts/login/")
-        Call<LoginDM> login_api_post(@Body LoginDM login);
+        Call<Object> login_api_post(@Body LoginDM login);
 
     @GET("api/seat/")
     Call<List<TempPlace>> seat_api_get();
