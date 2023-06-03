@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -59,6 +60,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
         holder.remainingSeatView.setText("남은 자리 : " + String.valueOf(tempPlace.getRemainingSeat()));
+        if(tempPlace.getRemainingSeat()<6){holder.remainingSeatView.setTextColor(Color.RED);};
 
         // 현재 위치 가져오기
         LocationManager locationManager = (LocationManager) holder.itemView.getContext().getSystemService(Context.LOCATION_SERVICE);

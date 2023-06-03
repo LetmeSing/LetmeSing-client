@@ -28,6 +28,13 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새로고침"
+        android:layout_gravity="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -37,5 +44,7 @@
         android:clipToPadding="false"
         android:elevation="8dp"
         android:padding="16dp" />
+
+
 
 </LinearLayout>
