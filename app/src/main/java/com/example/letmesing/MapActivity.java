@@ -3,12 +3,15 @@ package com.example.letmesing;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -50,6 +55,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private PlaceAdapter placeAdapter;
     // Retrofit 객체와 API 서비스 선언
     private Retrofit_interface retrofitService;
+    private Button refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // API 요청 보내기
         getPlaceListFromServer();
 
+        refreshButton = findViewById(R.id.refreshButton);
 
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 액티비티를 새로고침하는 동작 수행
+                recreate(); // 현재 액티비티를 다시 생성하여 새로고침
+            }
+        });
     }
 
     @Override
@@ -131,6 +145,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .position(latLng)
                                 .title(place.getName())
                                 .snippet(place.getAddress());
+                        if(place.getRemainingSeat()<6){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_dark));}
+                        else if(place.getRemainingSeat()<8){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray));}
+
                         Marker marker = mMap.addMarker(markerOptions);
                         marker.setTag(place); // 마커의 태그로 TempPlace 객체 설정
                         markerMap.put(place.getId(), marker);

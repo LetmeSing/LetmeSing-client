@@ -1,6 +1,11 @@
 package com.example.letmesing;
 
+import static java.lang.Short.parseShort;
+import static java.lang.Short.valueOf;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -31,6 +36,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return view;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void render(Marker marker, View view) {
         TextView titleTextView = view.findViewById(R.id.titleTextView);
         TextView addressTextView = view.findViewById(R.id.addressTextView);
@@ -57,6 +63,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         titleTextView.setText(title);
         addressTextView.setText(address);
         remainingSeatView.setText(remainingSeat);
+        if(parseShort(remainingSeat) < 6){remainingSeatView.setTextColor(Color.RED);}
         totalSeatView.setText(totalSeat);
     }
 }
