@@ -32,9 +32,6 @@ public class MasterActivity extends AppCompatActivity {
         numberPicker.setMinValue(0);
         numberPicker.setValue(7);   // 이거 GET 해서 값 얻어와야함 ㅅㅂㅋㅋㅋㅋㅋㅋㅋ 아 귀찮아
 
-//        String [] test = {"test1","test2"};
-//        numberPicker.setDisplayedValues(test);
-
         // 참고 블로그
         // https://prince-mint.tistory.com/14
         numberPicker.setOnLongPressUpdateInterval(100); //길게 눌렀을 때 몇 초부터 반응?

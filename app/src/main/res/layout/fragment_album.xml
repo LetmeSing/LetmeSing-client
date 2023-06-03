@@ -16,7 +16,7 @@
             android:layout_margin="10dp"
             android:text="앨범 목록"
             android:textSize="20dp"
-            android:textColor="#FF000000"/>
+            android:textColor="@color/black"/>
 
         <ListView
             android:id="@+id/listview_album"
@@ -31,6 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:text="Add new album" />
+            android:text="앨범 추가하기" />
     </LinearLayout>
 </FrameLayout>

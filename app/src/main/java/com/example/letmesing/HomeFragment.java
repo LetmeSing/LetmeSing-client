@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
     private TextView tv_retrofit2;
     private ImageView iv_arrow1;
     private ImageView iv_arrow2;
+    private ImageView iv_arrow3;
     private LinearLayout ll_karaoke;
     private LinearLayout ll_albumlist;
 
@@ -45,8 +46,10 @@ public class HomeFragment extends Fragment {
         // 밑에 2개 버튼 화살표 색상 변경
         iv_arrow1 = (ImageView) rootView.findViewById(R.id.imageView_arrow1);
         iv_arrow2 = (ImageView) rootView.findViewById(R.id.imageView_arrow2);
-        iv_arrow1.setColorFilter(Color.parseColor("#FFFFED92"));
-        iv_arrow2.setColorFilter(Color.parseColor("#FFFFED92"));
+        iv_arrow3 = (ImageView) rootView.findViewById(R.id.imageView_arrow3);
+        iv_arrow1.setColorFilter(Color.parseColor("#FF4F5458"));
+        iv_arrow2.setColorFilter(Color.parseColor("#FF4F5458"));
+        iv_arrow3.setColorFilter(Color.parseColor("#FF4F5458"));
 
         ll_karaoke = (LinearLayout) rootView.findViewById(R.id.linearLayout_karaoke);
         ll_albumlist = (LinearLayout) rootView.findViewById(R.id.linearLayout_albumList);
