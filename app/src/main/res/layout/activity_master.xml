@@ -44,6 +44,7 @@
             android:id="@+id/textView_master_karaoke_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             android:text="[노래방 이름]"
             android:textSize="30sp"
@@ -68,6 +69,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="현재 여석"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/shape_text_border"
                     android:textSize="20sp"
                     android:textColor="@color/gray_dark"/>
                 <TextView
@@ -91,6 +95,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="전체 여석"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/shape_text_border"
                     android:textSize="20sp"
                     android:textColor="@color/gray_dark"/>
                 <TextView
@@ -136,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="여석 변경하기" />
+                    android:text="적용하기" />
             </LinearLayout>
         </LinearLayout>
 
