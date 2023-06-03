@@ -20,7 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Album 이름" />
+                android:text="Album 이름"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:id="@+id/editText_album_name"
@@ -29,7 +30,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:maxLines="1"
-                android:hint="Name" />
+                android:hint="Name"
+                android:textColorHint="@color/gray_default" />
 
         </LinearLayout>
 
@@ -43,7 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Album 설명" />
+                android:text="Album 설명"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/editText_album_description"
@@ -51,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Description"/>
+                android:hint="Description"
+                android:textColorHint="@color/gray_default" />
 
         </LinearLayout>
 

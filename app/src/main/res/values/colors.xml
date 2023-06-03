@@ -23,4 +23,12 @@
 
     <color name="tab_selection_color">#FF858585</color>
     <color name="tab_selection_color2">#FF0095FF</color>
+
+<!--    색조합[1]-->
+    <color name="gray_light">#FFE9ECE5</color>
+    <color name="gray_default">#FFA0A19C</color>
+    <color name="gray_dark">#FF4F5458</color>
+    <color name="blue_dark">#FF6A7B8B</color>
+    <color name="blue_light">#FFB3C5CF</color>
+
 </resources>
