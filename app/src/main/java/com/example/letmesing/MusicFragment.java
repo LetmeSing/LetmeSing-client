@@ -23,10 +23,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyListFragment extends Fragment  {
+public class MusicFragment extends Fragment  {
 
-    public MyListFragment() {}
-    public MyListFragment(String album_id) {
+    public MusicFragment() {}
+    public MusicFragment(String album_id) {
         super();
         this.album_id = album_id;
     }
@@ -36,17 +36,16 @@ public class MyListFragment extends Fragment  {
     }
 
     Button btn_addSong;
-    ArrayList<MusicItem> musicList;
-    ArrayList<MusicItem> specific_musicList;
+    ArrayList<MusicItem> specific_musicList; // 특정 album_id 에 해당하는 music 들의 list
     ListView lv_custom;
     String album_id = "0";
-    private static ListAdapter listAdapter;
+    private static MusicAdapter listAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_list, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_music, container, false);
 
-        musicList = new ArrayList<>();
+        ArrayList<MusicItem> musicList = new ArrayList<>();
         Call<List<MusicDM>> callSync = RetrofitClient.getApiService().music_api_get();
         Thread th_temp = new Thread() {
             public void run() {
@@ -74,10 +73,10 @@ public class MyListFragment extends Fragment  {
             throw new RuntimeException(e);
         }
 
-        specific_musicList = pickMusic(this.album_id);
+        specific_musicList = pickMusic(this.album_id, musicList);
 
         lv_custom = (ListView) rootView.findViewById(R.id.listview_custom); // list view 연결
-        listAdapter = new ListAdapter(getContext(), specific_musicList); // 생성한 data 로 adapter 생성
+        listAdapter = new MusicAdapter(getContext(), specific_musicList); // 생성한 data 로 adapter 생성
         lv_custom.setAdapter(listAdapter); // adapter 연결
 
         lv_custom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -126,7 +125,7 @@ public class MyListFragment extends Fragment  {
         return rootView;
     }
 
-    private ArrayList<MusicItem> pickMusic (String album) {
+    private ArrayList<MusicItem> pickMusic (String album, ArrayList<MusicItem> musicList) {
         ArrayList<MusicItem> result = new ArrayList<>();
         int i = 0;
         while (i < musicList.size()) {

@@ -18,6 +18,5 @@
         <!--        <item name="android:windowFullscreen">true</item>-->
         <!--        타이틀바 삭제-->
         <item name="windowNoTitle">true</item>
-
     </style>
 </resources>

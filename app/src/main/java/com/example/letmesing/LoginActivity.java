@@ -80,9 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("Json 확인", json_user.toString());
 
                         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        // 나중에 is_master T/F 로 바뀌면 주석 해제 할것
-//                        if(Boolean.parseBoolean(userinfo.getIs_master())) myIntent = new Intent(LoginActivity.this, MasterActivity.class);
-                        if(userinfo.getIs_master().compareTo("0") == 0) myIntent = new Intent(LoginActivity.this, MasterActivity.class);
+                        // 1 = 점주
+                        if(userinfo.getIs_master().compareTo("1") == 0) myIntent = new Intent(LoginActivity.this, MasterActivity.class);
                         // 일반 사용자 > Main activity
                         myIntent.putExtra("user info", userinfo);
                         startActivity(myIntent);
@@ -136,6 +135,9 @@ class UserInfo implements Serializable {
         this.user_permissions = user_permissions;
     }
 
+    public String getId() {
+        return id;
+    }
     public String getLogin_id() {
         return login_id;
     }
