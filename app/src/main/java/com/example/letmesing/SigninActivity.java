@@ -49,8 +49,8 @@ public class SigninActivity extends AppCompatActivity {
                 String id = edtv_id.getText().toString();
                 String password = edtv_password.getText().toString();
                 String nickname = edtv_nickname.getText().toString();
-                String ismaster = "0";
-                if(chktv_isMaster.isChecked())  ismaster = "1";
+                String ismaster = "1";
+                if(chktv_isMaster.isChecked())  ismaster = "0";
 
                 RegisterDM registerDM = new RegisterDM(id, password, nickname, ismaster);
                 Call<RegisterDM> call2 = RetrofitClient.getApiService().register_api_post(registerDM);
