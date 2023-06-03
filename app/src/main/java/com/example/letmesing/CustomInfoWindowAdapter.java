@@ -5,10 +5,7 @@ import static java.lang.Short.valueOf;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-<<<<<<< HEAD
 import android.graphics.Color;
-=======
->>>>>>> 9ee6ba952327c1dfbdae339557933c0da17c0c7f
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;

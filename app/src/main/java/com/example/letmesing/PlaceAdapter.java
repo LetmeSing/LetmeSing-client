@@ -5,10 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-<<<<<<< HEAD
 import android.graphics.Color;
-=======
->>>>>>> 9ee6ba952327c1dfbdae339557933c0da17c0c7f
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -84,27 +81,6 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
             holder.distanceTextView.setText(distanceInKMeters + "km");
         }
 
-<<<<<<< HEAD
-=======
-        // 현재 위치 가져오기
-        LocationManager locationManager = (LocationManager) holder.itemView.getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(holder.itemView.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(holder.itemView.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) holder.itemView.getContext(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        }
-
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-
-        if (location != null) {
-            // 마커와 현재 위치 간의 거리 계산
-            float[] distance = new float[1];
-            Location.distanceBetween(location.getLatitude(), location.getLongitude(), tempPlace.getLatitude(), tempPlace.getLongitude(), distance);
-            float distanceInMeters = distance[0] / 1000;
-            double distanceInKMeters = (Math.round(distanceInMeters * 100) /100.0);
-            // 거리 표시
-            holder.distanceTextView.setText(distanceInKMeters + "km");
-        }
->>>>>>> 9ee6ba952327c1dfbdae339557933c0da17c0c7f
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

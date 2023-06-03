@@ -84,7 +84,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // API 요청 보내기
         getPlaceListFromServer();
 
-<<<<<<< HEAD
         refreshButton = findViewById(R.id.refreshButton);
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +93,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 recreate(); // 현재 액티비티를 다시 생성하여 새로고침
             }
         });
-=======
     }
 
     @Override
@@ -147,11 +145,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .position(latLng)
                                 .title(place.getName())
                                 .snippet(place.getAddress());
-<<<<<<< HEAD
                         if(place.getRemainingSeat()<6){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_dark));}
                         else if(place.getRemainingSeat()<8){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray));}
 
-=======
                         Marker marker = mMap.addMarker(markerOptions);
                         marker.setTag(place); // 마커의 태그로 TempPlace 객체 설정
                         markerMap.put(place.getId(), marker);
