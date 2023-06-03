@@ -65,7 +65,7 @@ public class AlbumAdapter extends ArrayAdapter {
                 FragmentTransaction transaction = albumfragment.getActivity().getSupportFragmentManager().beginTransaction();
                 // 확인 필요: 이거 매번 new 로 생성되면 수정한 결과가 반영 안되는거 아닌가? > 아 어차피 DB 에서 받아오는거면 문제없을수도? > 문제 없더라
                 // + bundle 활용해서 값 전달 구현 필요
-                MyListFragment mylistFragment = new MyListFragment(albumItem.getId());  // 이거 albumItem 가 CardView 에서의 position 값이면 조금 곤란할 수 있음 > 정렬이 흐트러지면 다른거 클릭하게됨
+                MusicFragment mylistFragment = new MusicFragment(albumItem.getId());  // 이거 albumItem 가 CardView 에서의 position 값이면 조금 곤란할 수 있음 > 정렬이 흐트러지면 다른거 클릭하게됨
                 //main_layout에 homeFragment로 transaction 한다.
                 transaction.replace(R.id.layout_main, mylistFragment);
                 //꼭 commit을 해줘야 바뀐다.

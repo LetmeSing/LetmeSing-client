@@ -1,7 +1,6 @@
 package com.example.letmesing;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends ArrayAdapter {
+public class MusicAdapter extends ArrayAdapter {
     //  선호 목록의 customListview 를 제작하기위한 customAdapter
     private Context context;
     private List musicList;
@@ -24,21 +23,21 @@ public class ListAdapter extends ArrayAdapter {
         public ImageView iv_delete;
     }
 
-    public ListAdapter(Context context, ArrayList musicList) {
+    public MusicAdapter(Context context, ArrayList musicList) {
         super(context, 0, musicList);
         this.context = context;
         this.musicList = musicList;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ListAdapter.ViewHolder viewHolder;
+        final MusicAdapter.ViewHolder viewHolder;
 
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             convertView = layoutInflater.inflate(R.layout.favorite_item, parent, false);
         }
 
-        viewHolder = new ListAdapter.ViewHolder();
+        viewHolder = new MusicAdapter.ViewHolder();
         viewHolder.tv_song = (TextView) convertView.findViewById(R.id.textView_song);
         viewHolder.tv_singer = (TextView) convertView.findViewById(R.id.textView_singer);
         viewHolder.iv_delete = (ImageView) convertView.findViewById(R.id.imageView_delete);
