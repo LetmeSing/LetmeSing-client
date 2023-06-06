@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyListFragment">
+    tools:context=".MusicFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -35,8 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:hint="노래 이름"
-                android:text="Test 노래" />
+                android:hint="노래 제목" />
 
             <EditText
                 android:id="@+id/editText_singer"
@@ -44,8 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:hint="가수 이름"
-                android:text="Test 가수" />
+                android:hint="가수 이름" />
         </LinearLayout>
 
         <Button

@@ -95,6 +95,7 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 patch_karaoke();
+                // activity 새로고침
                 Intent intent = getIntent();
                 startActivity(intent); //액티비티 열기
                 overridePendingTransition(0, 0);//인텐트 효과 없애기

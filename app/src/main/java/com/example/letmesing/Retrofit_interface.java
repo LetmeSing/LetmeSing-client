@@ -7,6 +7,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -19,7 +20,7 @@ public interface Retrofit_interface {
     // 앞에 @ 붙은건 https 의 methods 임 @POST, @PATCH...
 
     // DB에 저장된 Album 중 userID 에 해당하는 album 만 받아오는 함수
-    @GET("api/album/{UserID}")
+    @GET("api/album/{UserID}/")
     Call<AlbumDM> single_album_api_get(@Path("UserID") String userid);
 
     // DB에 저장된 Album List 전체를 받아오는 함수
@@ -53,9 +54,18 @@ public interface Retrofit_interface {
     @GET("api/seat/")
     Call<List<KaraokeDM>> karaoke_api_get();
 
+    // karaoke 남은 여석 변경 PATCH
     @FormUrlEncoded
     @PATCH("api/seat/{KaraokeID}/")
     Call<KaraokeDM> karaoke_api_patch(@Path("KaraokeID") String karaoke_id, @Field("remainingSeat") int remainingSeat);
+
+    // UserID 값에 해당하는 album instance 삭제
+    @DELETE("api/album/{UserID}/")
+    Call<Void> album_api_delete(@Path("UserID") String user_id);
+
+    // UserID 값에 해당하는 album instance 삭제
+    @DELETE("api/album/music/{MusicID}/")
+    Call<Void> music_api_delete(@Path("MusicID") String music_id);
 
     @GET("api/seat/")
     Call<List<TempPlace>> seat_api_get();

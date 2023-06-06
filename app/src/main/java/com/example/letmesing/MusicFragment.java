@@ -1,8 +1,11 @@
 package com.example.letmesing;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -25,26 +28,63 @@ import retrofit2.Response;
 
 public class MusicFragment extends Fragment  {
 
+    Button btn_addSong;
+    ArrayList<MusicItem> specific_musicList; // 특정 album_id 에 해당하는 music 들의 list
+    ListView lv_custom;
+    String album_id = "0";
+    String id_db_temp = null; // main 에서 thread 동작시키기 위해서 가져와봄 수정필요?
+    private static MusicAdapter musicAdapter;
+
     public MusicFragment() {}
     public MusicFragment(String album_id) {
         super();
         this.album_id = album_id;
     }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
-    Button btn_addSong;
-    ArrayList<MusicItem> specific_musicList; // 특정 album_id 에 해당하는 music 들의 list
-    ListView lv_custom;
-    String album_id = "0";
-    private static MusicAdapter listAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_music, container, false);
 
+        ArrayList<MusicItem> musicList = get_musicList();   // API 호출 > 전체 music List GET
+        specific_musicList = pickMusic(album_id, musicList);   // 앨범에 해당하는 Music List 만 추출
+        musicAdapter = new MusicAdapter(getContext(), specific_musicList); // MusicList 로 adapter 생성
+
+        lv_custom = (ListView) rootView.findViewById(R.id.listview_custom); // list view 연결
+        lv_custom.setAdapter(musicAdapter); // adapter 연결
+
+        lv_custom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(getContext(),(i+1)+"번째 노래가 클릭되었습니다.",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_addSong = (Button) rootView.findViewById(R.id.button_add);
+        btn_addSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText edtv_song = (EditText) rootView.findViewById(R.id.editText_song);
+                EditText edtv_singer = (EditText) rootView.findViewById(R.id.editText_singer);
+                String song = edtv_song.getText().toString();
+                String singer = edtv_singer.getText().toString();
+
+                MusicDM musicDM = new MusicDM(song, singer, album_id);
+                post_music(musicDM);
+
+                specific_musicList = pickMusic(album_id, get_musicList());   // 앨범에 해당하는 Music List 만 추출
+                musicAdapter = new MusicAdapter(getContext(), specific_musicList); // MusicList 로 adapter 생성
+                lv_custom.setAdapter(musicAdapter); // adapter 연결
+
+            }
+        });
+
+        return rootView;
+    }
+
+    private ArrayList<MusicItem> get_musicList () {
+        //  API GET > DB 에 있는 전체 Music List
         ArrayList<MusicItem> musicList = new ArrayList<>();
         Call<List<MusicDM>> callSync = RetrofitClient.getApiService().music_api_get();
         Thread th_temp = new Thread() {
@@ -58,7 +98,7 @@ public class MusicFragment extends Fragment  {
                         for (MusicDM music:apiResponse) {
                             MusicItem temp = new MusicItem(music.getId(), music.getName(), music.getSinger(), music.getAlbum());
                             musicList.add(temp);
-                            temp.prtAll();
+//                            temp.prtAll();
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -72,74 +112,49 @@ public class MusicFragment extends Fragment  {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        specific_musicList = pickMusic(this.album_id, musicList);
-
-        lv_custom = (ListView) rootView.findViewById(R.id.listview_custom); // list view 연결
-        listAdapter = new MusicAdapter(getContext(), specific_musicList); // 생성한 data 로 adapter 생성
-        lv_custom.setAdapter(listAdapter); // adapter 연결
-
-        lv_custom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),(i+1)+"번째 노래가 클릭되었습니다.",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btn_addSong = (Button) rootView.findViewById(R.id.button_add);
-//        추가 방식 POST 로 변경필요
-        btn_addSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText edtv_song = (EditText) rootView.findViewById(R.id.editText_song);
-                EditText edtv_singer = (EditText) rootView.findViewById(R.id.editText_singer);
-                String song = edtv_song.getText().toString();
-                String singer = edtv_singer.getText().toString();
-                // id 가 없는 상태로 저장된 item 이니 좋지 않음. 없애고 frag 를 refresh 하도록 만들것
-//                specific_musicList.add(new MusicItem(song, singer, album_id));
-//                listAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "추가 되었습니다.", Toast.LENGTH_SHORT).show();
-
-                MusicDM musicDM = new MusicDM(song, singer, album_id);
-                Call<MusicDM> call2 = RetrofitClient.getApiService().music_api_post(musicDM);
-                call2.enqueue(new Callback<MusicDM>() {
-                    @Override
-                    public void onResponse(Call<MusicDM> call, Response<MusicDM> response) {
-                        if (!response.isSuccessful()) {
-                            Log.e("연결 비정상", Integer.toString(response.code()));
+        return musicList;
+    }
+    private void post_music (MusicDM musicDM) {
+        // API POST > 생성된 musicDM 객체 DB 에 저장
+        Call<MusicDM> callSync = RetrofitClient.getApiService().music_api_post(musicDM);
+        Thread th_temp = new Thread() {
+            public void run() {
+                Response<MusicDM> response;
+                {
+                    try {
+                        response = callSync.execute();
+                        if (response.isSuccessful()) {
+                            Log.d("연결 성공: ", response.body().toString());
                             return;
                         }
-                        MusicDM musicResponse = response.body();
-                        Log.d("연결 성공", response.body().toString());
+                        Log.e("연결 Code: ", Integer.toString(response.code()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                    @Override
-                    public void onFailure(Call<MusicDM> call, Throwable t) {
-                        Log.v("연결 실패", t.getMessage());
-                    }
-                });
-                // 강제 refresh. 임시용이라 수정 필요함
-//                refresh();
+                }
             }
-        });
-
-        return rootView;
+        };
+        th_temp.start();
+        try {
+            th_temp.join(); // api 를 통해 data 를 받기전에 UI 가 먼저 생성되는 경우 막기 위한 join
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
-
     private ArrayList<MusicItem> pickMusic (String album, ArrayList<MusicItem> musicList) {
         ArrayList<MusicItem> result = new ArrayList<>();
         int i = 0;
         while (i < musicList.size()) {
             if (musicList.get(i).getAlbum().compareTo(album) == 0) {
                 result.add(musicList.get(i));
-                refresh();
             }
             i++;
         }
         return result;
     }
-    private void refresh () {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(this).attach(this).commit();
+
+    public void setId_db_temp (String new_id) {
+        this.id_db_temp = new_id;
     }
 }
 class MusicItem {

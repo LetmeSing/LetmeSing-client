@@ -1,6 +1,7 @@
 package com.example.letmesing;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MusicAdapter extends ArrayAdapter {
     //  선호 목록의 customListview 를 제작하기위한 customAdapter
@@ -50,9 +56,12 @@ public class MusicAdapter extends ArrayAdapter {
         viewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Toast.makeText(getContext(), (position+1)+"번째 아이템이 삭제됩니다.", Toast.LENGTH_SHORT).show();
+                String id_db = ((MusicItem) musicList.get(position)).getId();
+                Log.d("DELETE: Music 확인", "UI id : " + position + "\n실제 DB id : " + id_db);
+                delete_music(id_db);
                 musicList.remove(position);
                 notifyDataSetChanged();
-                Toast.makeText(getContext(), (position+1)+"번째 아이템이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -62,5 +71,24 @@ public class MusicAdapter extends ArrayAdapter {
 
         //Return the completed view to render on screen
         return convertView;
+    }
+    private void delete_music (String id_db) {
+        // DB 에 Music instance 삭제 함수
+        // UI 에 띄워주는거는 notifyDataSetChanged(); 로 끝났으니 sync 처리할 필요 없음
+        Call<Void> call = RetrofitClient.getApiService().music_api_delete(id_db);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("DELETE: Music: Not Sucess", "Not Success: code " + response.message());
+                    return;
+                }
+                Log.d("DELETE: Music: Sucess", "Success: code " + response.code());
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("DELETE: Music: Error", "실패 " + t.getMessage());
+            }
+        });
     }
 }
