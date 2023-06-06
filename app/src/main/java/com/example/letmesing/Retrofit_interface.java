@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 public interface Retrofit_interface {
     // 앞에 @ 붙은건 https 의 methods 임 @POST, @PATCH...
 
-    // DB에 저장된 Album 중 userID 에 해당하는 album 만 받아오는 함수
+    // DB에 저장된 Album 중 userID 에 해당하는 album 1개만 받아오는 함수 (테스트용)
     @GET("api/album/{UserID}/")
     Call<AlbumDM> single_album_api_get(@Path("UserID") String userid);
 
@@ -27,8 +27,6 @@ public interface Retrofit_interface {
     // my_api_get() 은 특정 usr_id 가 아니라 전체 data 를 list<> 형태로 받아옴
     @GET("api/album/")
     Call<List<AlbumDM>> album_api_get();
-    @GET("api/album/")
-    Call<List<AlbumDM>> album_api_get(@Query("id") String id);
 
     @GET("api/album/music/")
     Call<List<MusicDM>> music_api_get();
@@ -49,6 +47,10 @@ public interface Retrofit_interface {
     // 여기서는 JSon 의 형태로 반환 받음. Object 의 형태로 받아서 Gson 으로 toJson 함수로 가공할 것임.
     @POST("api/accounts/login/")
     Call<Object> login_api_post(@Body LoginDM login);
+
+    // 추천시스템 GET
+    @GET("api/recommend/")
+    Call<RecommendDM> recommend_api_get();
 
     // karaoke 전부 받는 GET
     @GET("api/seat/")
