@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AlbumFragment extends Fragment {
+    private UserInfo userinfo;
     private Button btn_addAlbum;
     private ArrayList<AlbumItem> albumList;
     private ListView lv_album;
@@ -39,8 +40,14 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_album, container, false);
 
+        // Userinfo 객체 전달 받음
+        Bundle mybundle = getArguments();
+        if (mybundle != null) {
+            userinfo = (UserInfo) mybundle.get("user info");
+        }
+
         albumList = new ArrayList<AlbumItem>();
-        Call<List<AlbumDM>> callSync = RetrofitClient.getApiService().album_api_get();
+        Call<List<AlbumDM>> callSync = RetrofitClient.getApiService().album_api_get();  // album_single 로 받아와야함!!!! userinfo.getID 사용
         // api 의 동기적 처리를 위한 임시 thread 생성    Main thread 내에서는 네트워크 통신이 막혀있음 (thread 없이 단순 try-catch 로는 네트워크 통신 사용 불가)
         Thread th_temp = new Thread() {
             public void run() {
@@ -75,7 +82,7 @@ public class AlbumFragment extends Fragment {
         btn_addAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Add New Album Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Add New Album Clicked", Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 AddAlbumFragment addalbumFragment = new AddAlbumFragment();
                 transaction.replace(R.id.layout_main, addalbumFragment);

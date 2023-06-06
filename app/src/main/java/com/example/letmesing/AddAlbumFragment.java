@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,12 +24,6 @@ public class AddAlbumFragment extends Fragment {
     private Button btn_post_album;
     private EditText edtv_ablum_name;
     private EditText edtv_album_description;
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,22 +44,7 @@ public class AddAlbumFragment extends Fragment {
                 String strNowDate = simpleDateFormat.format(nowDate);
                 // Post
                 AlbumDM albumDM = new AlbumDM(name, strNowDate,"0",description, "1");
-                Call<AlbumDM> call2 = RetrofitClient.getApiService().album_api_post(albumDM);
-                call2.enqueue(new Callback<AlbumDM>() {
-                    @Override
-                    public void onResponse(Call<AlbumDM> call, Response<AlbumDM> response) {
-                        if (!response.isSuccessful()) {
-                            Log.e("연결 비정상", Integer.toString(response.code()));
-                            return;
-                        }
-                        AlbumDM musicResponse = response.body();
-                        Log.d("연결 성공", response.body().toString());
-                    }
-                    @Override
-                    public void onFailure(Call<AlbumDM> call, Throwable t) {
-                        Log.v("연결 실패", t.getMessage());
-                    }
-                });
+                post_album(albumDM);
                 // 현재 AddAlbumFragment 종료
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().remove(AddAlbumFragment.this).commit();
@@ -73,5 +53,32 @@ public class AddAlbumFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return rootView;
+    }
+    private void post_album (AlbumDM albumDM) {
+        // API POST > 생성된 albumDM 객체 DB 에 저장
+        Call<AlbumDM> callSync = RetrofitClient.getApiService().album_api_post(albumDM);
+        Thread th_temp = new Thread() {
+            public void run() {
+                Response<AlbumDM> response;
+                {
+                    try {
+                        response = callSync.execute();
+                        if (response.isSuccessful()) {
+                            Log.d("연결 성공: ", response.body().toString());
+                            return;
+                        }
+                        Log.e("연결 Code: ", Integer.toString(response.code()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        };
+        th_temp.start();
+        try {
+            th_temp.join(); // api 를 통해 data 를 받기전에 UI 가 먼저 생성되는 경우 막기 위한 join
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
