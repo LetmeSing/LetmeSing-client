@@ -2,10 +2,7 @@ package com.example.letmesing;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,12 +10,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
@@ -74,45 +65,6 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         }
         totalSeatView.setText(totalSeat);
 
-        // 이미지 로딩
-        new ImageLoadTask(image, imageView).execute();
     }
 
-    private static class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-        private final String imageUrl;
-        private final WeakReference<ImageView> imageViewReference;
-
-        public ImageLoadTask(String imageUrl, ImageView imageView) {
-            this.imageUrl = imageUrl;
-            this.imageViewReference = new WeakReference<>(imageView);
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... voids) {
-            try {
-                URL url = new URL(imageUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                return BitmapFactory.decodeStream(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            ImageView imageView = imageViewReference.get();
-            if (imageView != null) {
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
-                } else {
-                    // 기본 이미지 설정
-                    imageView.setImageResource(R.drawable.default_image);
-                }
-            }
-        }
-    }
 }

@@ -82,8 +82,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         placeAdapter.setOnItemClickListener(this); // 리스너 설정
         recyclerView.setAdapter(placeAdapter);
 
-        // API 요청 보내기
-        getPlaceListFromServer();
+        Thread uThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // API 요청 보내기
+                    getPlaceListFromServer();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        uThread.start();
+
+        try{
+            uThread.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
 
         refreshButton = findViewById(R.id.refreshButton);
 

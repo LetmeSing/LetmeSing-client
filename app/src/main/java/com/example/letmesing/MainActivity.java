@@ -47,14 +47,23 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.tab_home: {
+                    // bottomNavi 로 home 화면 복귀시 back stack 초기화
+                    FragmentManager manager = getSupportFragmentManager();
+                    for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {
+                        manager.popBackStack();
+                    }
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.layout_main, new HomeFragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_list: {
+                    Bundle mybundle = new Bundle();   // 번들 생성
+                    mybundle.putSerializable("user info", userinfo);  // 데이터 적재
+                    AlbumFragment albumFragment = new AlbumFragment();
+                    albumFragment.setArguments(mybundle);
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.layout_main, new AlbumFragment())
+                            .replace(R.id.layout_main, albumFragment)
                             .commit();
                     return true;
                 }
