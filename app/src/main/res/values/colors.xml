@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>r
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+
+<!--    커스텀 색상-->
+    <color name="yellow_primary">#FFFFED92</color>
+    <color name="yellow_variant">#FFFFE459</color>
+    <color name="orange">#FFFFD089</color>
+    <color name="gray">#FF8B8B8B</color>
+    <color name="dark_yellow">#DAA300</color>
+    <color name="my_background_color">#FF9800</color>
+    <color name="pink_dark">#D5B9B2</color>
+    <color name="pink_light">#DDD5D0</color>
+
+<!--    회색-녹색 살짝 포함-->
+    <color name="gray_primary">#FFDFE4DF</color>
+    <color name="gray_variant">#FF828982</color>
+    <color name="dark_gray">#FF2E382E</color>
+
+    <color name="tab_selection_color">#FF858585</color>
+    <color name="tab_selection_color2">#FF0095FF</color>
+
+<!--    색조합[1]-->
+    <color name="gray_light">#FFE9ECE5</color>
+    <color name="gray_default">#FFA0A19C</color>
+    <color name="gray_dark">#FF4F5458</color>
+    <color name="blue_dark">#FF6A7B8B</color>
+    <color name="blue_light">#FFB3C5CF</color>
+
+</resources>
