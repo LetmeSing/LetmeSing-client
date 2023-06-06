@@ -3,6 +3,8 @@ package com.example.letmesing;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class AlbumDM {
     //    Album 의 DataModel
 //    serializer db 에 저장된 data 는 row 형태 > 1번 row 를 뽑아줄때 byte 의 나열로 제공됨 > serializer 는 해당 DB 의 row 를 json 형태로 가공하는 method
@@ -213,7 +215,61 @@ class RegisterDM {
     public String getNickname() {
         return nickname;
     }
-    public String getIs_master() {
-        return is_master;
+    public String getIs_master() {  return is_master;   }
+}
+
+class RecommendDM {
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("data")
+    @Expose
+    private List<Recommend_DataDM> data;
+
+    public RecommendDM () {}
+    public RecommendDM (String status, String message, List<Recommend_DataDM> data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
     }
+
+    public String getStatus() {
+        return status;
+    }
+    public String getMessage() {  return message;   }
+    public List<Recommend_DataDM> getData() {
+        return data;
+    }
+
+}
+
+class Recommend_DataDM {
+    @SerializedName("artist")
+    @Expose
+    private String artist;
+    @SerializedName("track")
+    @Expose
+    private String track;
+    @SerializedName("image")
+    @Expose
+    private String image;
+
+    public Recommend_DataDM () {}
+    public Recommend_DataDM (String artist, String track, String image) {
+        this.artist = artist;
+        this.track = track;
+        this.image = image;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+    public String getTrack() {  return track;   }
+    public String getImage() {
+        return image;
+    }
+
 }

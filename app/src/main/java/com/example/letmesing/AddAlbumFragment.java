@@ -24,6 +24,12 @@ public class AddAlbumFragment extends Fragment {
     private Button btn_post_album;
     private EditText edtv_ablum_name;
     private EditText edtv_album_description;
+    private String user_id;
+
+    public AddAlbumFragment () {}
+    public AddAlbumFragment (String user_id) {
+        this.user_id = user_id;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class AddAlbumFragment extends Fragment {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String strNowDate = simpleDateFormat.format(nowDate);
                 // Post
-                AlbumDM albumDM = new AlbumDM(name, strNowDate,"0",description, "1");
+                AlbumDM albumDM = new AlbumDM(name, strNowDate,"0",description, user_id);
                 post_album(albumDM);
                 // 현재 AddAlbumFragment 종료
                 FragmentManager manager = getActivity().getSupportFragmentManager();

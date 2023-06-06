@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,6 +38,8 @@ public class HomeFragment extends Fragment {
     private ImageView iv_arrow3;
     private LinearLayout ll_karaoke;
     private LinearLayout ll_albumlist;
+    private List<Recommend_DataDM> recommend_list;
+    private Recommend_DataDM recommend_data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +61,27 @@ public class HomeFragment extends Fragment {
         ll_karaoke = (LinearLayout) rootView.findViewById(R.id.linearLayout_karaoke);
         ll_albumlist = (LinearLayout) rootView.findViewById(R.id.linearLayout_albumList);
 
+        TextView tv_track = (TextView) rootView.findViewById(R.id.textView_recommend_track);
+        TextView tv_artist = (TextView) rootView.findViewById(R.id.textView_recommend_artist);
+        ImageView iv_image = (ImageView) rootView.findViewById(R.id.imageView_recommend_image);
+
+        recommend_list = get_recommend();
+        if (!recommend_list.isEmpty()) {
+            for (int i=0; i<recommend_list.size(); i++) {
+                Recommend_DataDM r = recommend_list.get(i);
+                Log.d("출력: Rec " + i,  r.getArtist() + "\n" + r.getTrack() + "\n" + r.getImage());
+            }
+        }
+        recommend_data = recommend_list.get(0);
+        tv_artist.setText(recommend_data.getArtist());
+        tv_track.setText(recommend_data.getTrack());
+        String url = recommend_data.getImage();
+        Glide.with(getActivity()).load(url).placeholder(R.drawable.default_image).error(R.drawable.trash_bin).into(iv_image);
+
         ll_karaoke.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),MapActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
@@ -85,67 +108,37 @@ public class HomeFragment extends Fragment {
             }
         };
 
-/*
-
-        // retrofit 코드 시작
-        tv_retrofit = (TextView) rootView.findViewById(R.id.textView_retrofit);
-//        call = RetrofitClient.getApiService().test_api_get("1");
-        call = RetrofitClient.getApiService().test_api_get("1");
-
-        call.enqueue(new Callback<AlbumDM>(){
-            //콜백 받는 부분
-            @Override
-            public void onResponse(retrofit2.Call<AlbumDM> call, Response<AlbumDM> response) {
-                AlbumDM result = response.body();
-                String str;
-                str= result.getId() +"\n"+
-                        result.getName()+"\n"+
-                        result.getCreated_at()+"\n"+
-                        result.getNumOfSongs()+"\n"+
-                        result.getDescription()+"\n"+
-                        result.getMember();
-                tv_retrofit.setText(str);
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<AlbumDM> call, Throwable t) {
-                tv_retrofit.setText("onFailure[1]: \n"+t.getMessage());
-            }
-        }); // retrofit 코드 종료
-
-        // 전체 data 받아오는 my_api_get() 테스트용 call2
-        // my_api_get() 은 특정 usr_id 가 아니라 전체 data 를 list<> 형태로 받아옴
-        tv_retrofit2 = (TextView) rootView.findViewById(R.id.textView_retrofit2);
-        Call<List<AlbumDM>> call2 = RetrofitClient.getApiService().my_api_get();
-        call2.enqueue(new Callback<List<AlbumDM>>() {
-            @Override
-            public void onResponse(Call<List<AlbumDM>> call, Response<List<AlbumDM>> response) {
-                if (!response.isSuccessful()) {
-                    tv_retrofit2.setText("Error Code: " + response.code());
-                    return;
-                }
-                List<AlbumDM> albums = response.body();
-
-                // for (A:B) >> B 가 empty 할 때 까지 B 에서 차례대로 객체를 꺼내 A 에 넣겠다
-                for (AlbumDM album:albums) {
-                    String content = "";
-                    content += album.getId() +"\n"+
-                            album.getName()+"\n"+
-                            album.getCreated_at()+"\n"+
-                            album.getNumOfSongs()+"\n"+
-                            album.getDescription()+"\n"+
-                            album.getMember() + "\n\n";
-                    tv_retrofit2.append(content);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<AlbumDM>> call, Throwable t) {
-                tv_retrofit2.setText("onFailure[2]: \n"+t.getMessage());
-            }
-        });
-*/
-
         // Inflate the layout for this fragment
         return rootView;
+    }
+    private List<Recommend_DataDM> get_recommend () {
+        final List<Recommend_DataDM>[] result = new ArrayList[]{new ArrayList<>()};
+
+        Call<RecommendDM> callSync = RetrofitClient.getApiService().recommend_api_get();
+        Thread th_temp = new Thread() {
+            @Override
+            public void run() {
+                Response<RecommendDM> response;
+                try {
+                    response = callSync.execute();
+                    RecommendDM apiResponse = response.body();
+                    if (!response.isSuccessful()) {
+                        Log.d("연결 비정상: Recommend", Integer.toString(response.code()));
+                        return;
+                    }
+                    Log.d("연결 성공: Recommend ", Integer.toString(response.code()));
+                    result[0] = apiResponse.getData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        th_temp.start();
+        try {
+            th_temp.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return result[0];
     }
 }
