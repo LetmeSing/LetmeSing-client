@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -57,6 +58,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             image = String.valueOf(place.getImage());
         }
 
+        Glide.with(mContext).load(image).placeholder(R.drawable.default_image).error(R.drawable.trash_bin).into(imageView);
         titleTextView.setText(title);
         addressTextView.setText(address);
         remainingSeatView.setText(remainingSeat);

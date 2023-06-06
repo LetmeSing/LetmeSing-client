@@ -163,49 +163,63 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void getPlaceListFromServer() {
-        Call<List<TempPlace>> call = retrofitService.seat_api_get();
-        call.enqueue(new Callback<List<TempPlace>>() {
-            @SuppressLint("NotifyDataSetChanged")
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(@NonNull Call<List<TempPlace>> call, @NonNull Response<List<TempPlace>> response) {
-                if (response.isSuccessful()) {
-                    // API 응답이 성공적으로 도착한 경우 장소 목록을 가져와서 처리
-                    placeList = response.body();
-                    placeAdapter.setPlaceList(placeList); // 어댑터에 목록 설정
-                    placeAdapter.notifyDataSetChanged(); // 어댑터 갱신
+            public void run() {
+                Call<List<TempPlace>> call = retrofitService.seat_api_get();
+                call.enqueue(new Callback<List<TempPlace>>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<List<TempPlace>> call, @NonNull Response<List<TempPlace>> response) {
+                        if (response.isSuccessful()) {
+                            // API 응답이 성공적으로 도착한 경우 장소 목록을 가져와서 처리
+                            placeList = response.body();
+                            placeAdapter.setPlaceList(placeList); // 어댑터에 목록 설정
+                            placeAdapter.notifyDataSetChanged(); // 어댑터 갱신
 
-                    // 기존의 마커들을 제거
-                    for (Marker marker : markerMap.values()) {
-                        marker.remove();
+                            // 기존의 마커들을 제거
+                            for (Marker marker : markerMap.values()) {
+                                marker.remove();
+                            }
+                            markerMap.clear();
+
+                            // 새로운 목록의 마커들을 추가
+                            for (int i = 0; i < placeList.size(); i++) {
+                                TempPlace place = placeList.get(i);
+                                LatLng latLng = new LatLng(place.getLatitude(), place.getLongitude());
+                                MarkerOptions markerOptions = new MarkerOptions()
+                                        .position(latLng)
+                                        .title(place.getName())
+                                        .snippet(place.getAddress());
+                                if (place.getRemainingSeat() < 6) {
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_light));
+                                } else if (place.getRemainingSeat() < 8) {
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray));
+                                } else {
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_dark));
+                                }
+
+                                Marker marker = mMap.addMarker(markerOptions);
+                                marker.setTag(place); // 마커의 태그로 TempPlace 객체 설정
+                                markerMap.put(place.getId(), marker);
+                            }
+                        } else {
+                            Toast.makeText(MapActivity.this, "API 요청에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    markerMap.clear();
 
-                    // 새로운 목록의 마커들을 추가
-                    for (int i = 0; i < placeList.size(); i++) {
-                        TempPlace place = placeList.get(i);
-                        LatLng latLng = new LatLng(place.getLatitude(), place.getLongitude());
-                        MarkerOptions markerOptions = new MarkerOptions()
-                                .position(latLng)
-                                .title(place.getName())
-                                .snippet(place.getAddress());
-                        if(place.getRemainingSeat()<6){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_light));}
-                        else if(place.getRemainingSeat()<8){markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray));}
-                        else{markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_dark));}
-
-                        Marker marker = mMap.addMarker(markerOptions);
-                        marker.setTag(place); // 마커의 태그로 TempPlace 객체 설정
-                        markerMap.put(place.getId(), marker);
+                    @Override
+                    public void onFailure(@NonNull Call<List<TempPlace>> call, @NonNull Throwable t) {
+                        Toast.makeText(MapActivity.this, "API 요청에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(MapActivity.this, "API 요청에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                }
+                });
             }
-
-            @Override
-            public void onFailure(@NonNull Call<List<TempPlace>> call, @NonNull Throwable t) {
-                Toast.makeText(MapActivity.this, "API 요청에 실패했습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).start();
+        try{
+            Thread.sleep(50);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("MissingPermission")
