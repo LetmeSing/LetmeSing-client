@@ -31,6 +31,9 @@ public class TempPlace {
     @SerializedName("longitude")
     @Expose
     private double longitude;
+    @SerializedName("image")
+    @Expose
+    private String image;
 
     public TempPlace() {
     }
@@ -55,5 +58,8 @@ public class TempPlace {
     }
     public double getLongitude(){
         return longitude;
+    }
+    public String getImage(){
+        return image;
     }
 }

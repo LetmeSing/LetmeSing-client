@@ -1,15 +1,14 @@
 package com.example.letmesing;
 
-import static java.lang.Short.parseShort;
-import static java.lang.Short.valueOf;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -42,28 +41,32 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         TextView addressTextView = view.findViewById(R.id.addressTextView);
         TextView remainingSeatView = view.findViewById(R.id.remainingSeatView);
         TextView totalSeatView = view.findViewById(R.id.totalSeatView);
+        ImageView imageView = view.findViewById(R.id.imageView);
 
         // 마커 정보 설정
         String title = marker.getTitle();
         String address = marker.getSnippet();
         String remainingSeat = "";
         String totalSeat = "";
+        String image = "";
 
         Object tag = marker.getTag();
-        if (tag != null) {
-            if (tag instanceof TempPlace) {
-                TempPlace place = (TempPlace) tag;
-                remainingSeat = String.valueOf(place.getRemainingSeat());
-                totalSeat = String.valueOf(place.getTotalSeat());
-            } else {
-                // 태그가 다른 형식일 경우에 대한 처리
-            }
+        if (tag != null && tag instanceof TempPlace) {
+            TempPlace place = (TempPlace) tag;
+            remainingSeat = String.valueOf(place.getRemainingSeat());
+            totalSeat = String.valueOf(place.getTotalSeat());
+            image = String.valueOf(place.getImage());
         }
 
+        Glide.with(mContext).load(image).placeholder(R.drawable.default_image).error(R.drawable.trash_bin).into(imageView);
         titleTextView.setText(title);
         addressTextView.setText(address);
         remainingSeatView.setText(remainingSeat);
-        if(parseShort(remainingSeat) < 6){remainingSeatView.setTextColor(Color.RED);}
+        if (Short.parseShort(remainingSeat) < 6) {
+            remainingSeatView.setTextColor(Color.RED);
+        }
         totalSeatView.setText(totalSeat);
+
     }
+
 }
