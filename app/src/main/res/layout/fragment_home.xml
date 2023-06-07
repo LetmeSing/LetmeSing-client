@@ -81,16 +81,10 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="더 많은 곡 보러가기"
+                    android:text="당신을 위한 추천곡"
                     android:textSize="15sp"
                     android:textColor="@color/gray_dark"/>
 
-                <ImageView
-                    android:id="@+id/imageView_arrow1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/ic_arrow_right_24"/>
             </LinearLayout>
         </LinearLayout>
 

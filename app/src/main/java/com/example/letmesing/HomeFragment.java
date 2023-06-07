@@ -51,10 +51,10 @@ public class HomeFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
         // 밑에 2개 버튼 화살표 색상 변경
-        iv_arrow1 = (ImageView) rootView.findViewById(R.id.imageView_arrow1);
+//        iv_arrow1 = (ImageView) rootView.findViewById(R.id.imageView_arrow1);
         iv_arrow2 = (ImageView) rootView.findViewById(R.id.imageView_arrow2);
         iv_arrow3 = (ImageView) rootView.findViewById(R.id.imageView_arrow3);
-        iv_arrow1.setColorFilter(Color.parseColor("#FF4F5458"));
+//        iv_arrow1.setColorFilter(Color.parseColor("#FF4F5458"));
         iv_arrow2.setColorFilter(Color.parseColor("#FF4F5458"));
         iv_arrow3.setColorFilter(Color.parseColor("#FF4F5458"));
 
@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
         tv_artist.setText(recommend_data.getArtist());
         tv_track.setText(recommend_data.getTrack());
         String url = recommend_data.getImage();
-        Glide.with(getActivity()).load(url).placeholder(R.drawable.default_image).error(R.drawable.trash_bin).into(iv_image);
+        Glide.with(getActivity()).load(url).placeholder(R.drawable.place_holder).error(R.drawable.trash_bin).into(iv_image);
 
         ll_karaoke.setOnClickListener(new View.OnClickListener() {
             @Override

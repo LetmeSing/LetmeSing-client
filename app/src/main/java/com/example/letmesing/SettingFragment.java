@@ -30,7 +30,10 @@ public class SettingFragment extends Fragment {
         }
 
         tv_userinfo = (TextView) rootView.findViewById(R.id.textView_userinfo);
-        tv_userinfo.setText(userinfo.getAll());
+        if (userinfo.getIs_master().compareTo("0")==0) {
+            tv_userinfo.setText("일반 사용자 입니다.");
+        }
+//        tv_userinfo.setText(userinfo.getAll());
 
         return rootView;
     }

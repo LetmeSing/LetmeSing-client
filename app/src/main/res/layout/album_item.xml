@@ -71,7 +71,7 @@
                     android:id="@+id/textView_numSongs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Number_of_Songs_test"
+                    android:text=""
                     android:textColor="@color/blue_dark"/>
             </LinearLayout>
         </LinearLayout>

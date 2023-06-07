@@ -62,7 +62,7 @@ public class AlbumAdapter extends ArrayAdapter {
         viewHolder.tv_name.setText(albumItem.getName());
         viewHolder.tv_description.setText(albumItem.getDescription());
         viewHolder.tv_createdDate.setText(albumItem.getCreated_at());
-        viewHolder.tv_numSongs.setText(albumItem.getNumOfSongs());
+//        viewHolder.tv_numSongs.setText(albumItem.getNumOfSongs());
 
         // clickable 이 달려있는 cardview 를 클릭 시 list fragment 로 frag 전환 + 해당 album의 id 값을 list fragment 에 전달
         // 구현 필요: 선택된 album 의 id 값을 list Fragment 전달 > 해당 id 값을 가진 Music 들로 구성된 List frag 를 생성 >> 생성자로 전달?
