@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -58,15 +59,27 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             image = String.valueOf(place.getImage());
         }
 
-        Glide.with(mContext).load(image).placeholder(R.drawable.default_image).error(R.drawable.trash_bin).into(imageView);
+        Glide.with(mContext).load(image).placeholder(R.drawable.place_holder).diskCacheStrategy(DiskCacheStrategy.ALL).fallback(R.drawable.empty).error(R.drawable.fail).into(imageView);
+
         titleTextView.setText(title);
         addressTextView.setText(address);
         remainingSeatView.setText(remainingSeat);
         if (Short.parseShort(remainingSeat) < 6) {
-            remainingSeatView.setTextColor(Color.RED);
+            remainingSeatView.setTextColor(R.color.red_gray);
+        }
+        else {
+            remainingSeatView.setTextColor(Color.BLACK);
         }
         totalSeatView.setText(totalSeat);
+        totalSeatView.setTextColor(Color.BLACK);
 
+        TextView remainingSeatLabel = view.findViewById(R.id.remainingSeat);
+        TextView totalSeatLabel = view.findViewById(R.id.totalSeat);
+
+        remainingSeatLabel.setText("현재");
+        remainingSeatLabel.setTextColor(R.color.gray);
+        totalSeatLabel.setText("전체");
+        totalSeatLabel.setTextColor(R.color.gray);
     }
 
 }

@@ -18,6 +18,7 @@
     <color name="my_background_color">#FF9800</color>
     <color name="pink_dark">#D5B9B2</color>
     <color name="pink_light">#DDD5D0</color>
+    <color name="red_gray">#CD5D81</color>
 
 <!--    회색-녹색 살짝 포함-->
     <color name="gray_primary">#FFDFE4DF</color>

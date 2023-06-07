@@ -1,104 +1,100 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="250dp"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="25sp"
+        android:background="@color/blue_light"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingStart="10dp"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:background="#E9ECE5"
-        android:maxLines="1"
-        android:layout_weight="1"
-        android:paddingStart="10dp"
-        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/remainingSeat"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:layout_margin="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="현재"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/remainingSeatView"
+        app:layout_constraintEnd_toStartOf="@id/totalSeat"
+        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"/>
+    <TextView
+        android:id="@+id/totalSeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="전체"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/remainingSeatView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/remainingSeat"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/remainingSeatView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintEnd_toStartOf="@id/totalSeatView"
+        app:layout_constraintTop_toBottomOf="@id/remainingSeat"
+        app:layout_constraintBottom_toTopOf="@id/addressTextView"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="남은 자리"
-                    android:maxLines="1"
-                    android:textSize="16sp"
-                    android:gravity="center" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="총 자리"
-                    android:maxLines="1"
-                    android:textSize="16sp"
-                    android:gravity="center" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/remainingSeatView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    tools:ignore="NestedWeights" />
-                <TextView
-                    android:id="@+id/totalSeatView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="#808080"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/totalSeatView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/remainingSeatView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalSeat"
+        app:layout_constraintBottom_toTopOf="@id/addressTextView"/>
 
     <TextView
         android:id="@+id/addressTextView"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:textColor="#808080"
         android:textSize="12sp"
-        android:maxLines="1"/>
+        app:layout_constraintEnd_toEndOf="@id/titleTextView"
+        app:layout_constraintStart_toStartOf="@id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
