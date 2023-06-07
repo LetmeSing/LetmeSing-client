@@ -35,7 +35,7 @@ public class AlbumAdapter extends ArrayAdapter {
         public ImageView iv_delete;
     }
 
-    public AlbumAdapter (Context context, ArrayList albumList, AlbumFragment albumfragment) {
+    public AlbumAdapter (Context context, List albumList, AlbumFragment albumfragment) {
         super(context, 0, albumList);
         this.context = context;
         this.albumList = albumList;
