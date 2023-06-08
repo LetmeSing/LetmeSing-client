@@ -28,7 +28,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         requestOptions = new RequestOptions()
                 .placeholder(R.drawable.place_holder)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fallback(R.drawable.empty)
+                .fallback(R.drawable.lms)
                 .error(R.drawable.fail);
     }
 

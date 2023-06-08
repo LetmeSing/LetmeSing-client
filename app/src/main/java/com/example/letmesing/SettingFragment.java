@@ -1,18 +1,17 @@
 package com.example.letmesing;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 public class SettingFragment extends Fragment {
     private UserInfo userinfo;
     private TextView tv_userinfo;
+    private TextView tv_userName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,8 @@ public class SettingFragment extends Fragment {
         if (mybundle != null) {
             userinfo = (UserInfo) mybundle.get("user info");
         }
-
+        tv_userName = (TextView) rootView.findViewById(R.id.textView_userNickname);
+        tv_userName.setText(String.valueOf(userinfo.getNickname()) + "님은");
         tv_userinfo = (TextView) rootView.findViewById(R.id.textView_userinfo);
         if (userinfo.getIs_master().compareTo("0")==0) {
             tv_userinfo.setText("일반 사용자 입니다.");
