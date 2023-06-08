@@ -9,11 +9,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -53,31 +56,51 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         return new PlaceViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder holder, @SuppressLint("RecyclerView") int position) {
         TempPlace tempPlace = placeList.get(position);
         holder.titleTextView.setText(tempPlace.getName());
         holder.addressTextView.setText(tempPlace.getAddress());
         holder.remainingSeatView.setText("남은 자리 : " + String.valueOf(tempPlace.getRemainingSeat()));
-        if(tempPlace.getRemainingSeat()<6){holder.remainingSeatView.setTextColor(Color.RED);};
+        if(tempPlace.getRemainingSeat()<6){holder.remainingSeatView.setTextColor(Color.parseColor("#CD5D81"));};
 
         // 현재 위치 가져오기
         LocationManager locationManager = (LocationManager) holder.itemView.getContext().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(holder.itemView.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(holder.itemView.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) holder.itemView.getContext(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        }
+        // 위치 권한 확인
+        if (ActivityCompat.checkSelfPermission(holder.itemView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(holder.itemView.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(holder.itemView.getContext(), "위치정보 없음", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions((Activity) holder.itemView.getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        } else {
+            // 위치 정보를 가져올 수 있는 경우
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    // 마커와 현재 위치 간의 거리 계산
+                    float[] distance = new float[1];
+                    Location.distanceBetween(location.getLatitude(), location.getLongitude(), tempPlace.getLatitude(), tempPlace.getLongitude(), distance);
+                    float distanceInMeters = distance[0] / 1000;
+                    double distanceInKMeters = (Math.round(distanceInMeters * 100) / 100.0);
+                    // 거리 표시
+                    holder.distanceTextView.setText(distanceInKMeters + "km");
+                    holder.distanceTextView.setTextColor(Color.parseColor("#D5B9B2"));
+                    // 위치 업데이트가 끝나면 리스너 제거
+                    locationManager.removeUpdates(this);
+                }
 
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-        if (location != null) {
-            // 마커와 현재 위치 간의 거리 계산
-            float[] distance = new float[1];
-            Location.distanceBetween(location.getLatitude(), location.getLongitude(), tempPlace.getLatitude(), tempPlace.getLongitude(), distance);
-            float distanceInMeters = distance[0] / 1000;
-            double distanceInKMeters = (Math.round(distanceInMeters * 100) /100.0);
-            // 거리 표시
-            holder.distanceTextView.setText(distanceInKMeters + "km");
+                @Override
+                public void onProviderEnabled(String provider) {}
+
+                @Override
+                public void onProviderDisabled(String provider) {}
+            };
+            // 위치 업데이트 요청
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -17,10 +18,18 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final Context mContext;
     private final LayoutInflater mInflater;
+    private View mWindow;
+    private RequestOptions requestOptions;
 
     public CustomInfoWindowAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
+        mWindow = mInflater.inflate(R.layout.custom_info_window, null);
+        requestOptions = new RequestOptions()
+                .placeholder(R.drawable.place_holder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .fallback(R.drawable.empty)
+                .error(R.drawable.fail);
     }
 
     @Override
@@ -31,9 +40,8 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoContents(Marker marker) {
-        View view = mInflater.inflate(R.layout.custom_info_window, null);
-        render(marker, view);
-        return view;
+        render(marker, mWindow);
+        return mWindow;
     }
 
     @SuppressLint("ResourceAsColor")
@@ -59,13 +67,16 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             image = String.valueOf(place.getImage());
         }
 
-        Glide.with(mContext).load(image).placeholder(R.drawable.place_holder).diskCacheStrategy(DiskCacheStrategy.ALL).fallback(R.drawable.empty).error(R.drawable.fail).into(imageView);
+        Glide.with(mContext)
+                .load(image)
+                .apply(requestOptions)
+                .into(imageView);
 
         titleTextView.setText(title);
         addressTextView.setText(address);
         remainingSeatView.setText(remainingSeat);
         if (Short.parseShort(remainingSeat) < 6) {
-            remainingSeatView.setTextColor(R.color.red_gray);
+            remainingSeatView.setTextColor(Color.parseColor("#D5B9B2"));
         }
         else {
             remainingSeatView.setTextColor(Color.BLACK);
@@ -77,9 +88,9 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         TextView totalSeatLabel = view.findViewById(R.id.totalSeat);
 
         remainingSeatLabel.setText("현재");
-        remainingSeatLabel.setTextColor(R.color.gray);
+        remainingSeatLabel.setTextColor(Color.parseColor("#FF828982"));
         totalSeatLabel.setText("전체");
-        totalSeatLabel.setTextColor(R.color.gray);
+        totalSeatLabel.setTextColor(Color.parseColor("#FF828982"));
     }
 
 }

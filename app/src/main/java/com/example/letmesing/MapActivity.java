@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -66,6 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
+
         // Retrofit 인터페이스를 가져옴
         retrofitService = RetrofitClient.getApiService();
 
@@ -184,13 +185,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }*/
 
     private void setupRefreshButton() {
-        Button refreshButton = findViewById(R.id.refreshButton);
-        refreshButton.setText("새로고침");
+        ImageButton refreshButton = findViewById(R.id.refreshButton);
 
         refreshButton.setOnClickListener(v -> {
             cameraPosition = mMap.getCameraPosition().target;
             // 액티비티를 재시작하는 동작 수행
-            Toast.makeText(MapActivity.this,"현재위치 저장",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MapActivity.this,"현재위치 저장",Toast.LENGTH_SHORT).show();
             finish();
             startActivity(getIntent());
         });
@@ -321,6 +321,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             // 위치 권한이 있는 경우 현재 위치 가져오기
             getLastLocation();
+            mMap.setMyLocationEnabled(true);
         }
         // getPlaceListFromServer() 메서드를 호출하기 전에 mMap 객체가 초기화되었는지 확인
         if (mMap != null) {
@@ -328,7 +329,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
         }
-        mMap.setMyLocationEnabled(true);
         if (mMap == null) {
             Log.d("MapActivity", "mMap is null");
         }

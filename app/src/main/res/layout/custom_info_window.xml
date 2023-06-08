@@ -41,7 +41,7 @@
         android:text="현재"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/remainingSeatView"
-        app:layout_constraintEnd_toStartOf="@id/totalSeat"
+        app:layout_constraintEnd_toStartOf="@id/divider"
         app:layout_constraintStart_toEndOf="@id/imageView"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
@@ -54,7 +54,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/remainingSeatView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/remainingSeat"
+        app:layout_constraintStart_toEndOf="@id/divider"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
     <TextView
@@ -64,9 +64,22 @@
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintEnd_toStartOf="@id/totalSeatView"
+        app:layout_constraintEnd_toStartOf="@id/divider"
         app:layout_constraintTop_toBottomOf="@id/remainingSeat"
         app:layout_constraintBottom_toTopOf="@id/addressTextView"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:rotation="15"
+        app:layout_constraintBottom_toBottomOf="@+id/remainingSeatView"
+        app:layout_constraintEnd_toStartOf="@+id/totalSeat"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/remainingSeat"
+        app:layout_constraintTop_toTopOf="@+id/totalSeat"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/totalSeatView"
@@ -74,7 +87,7 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/remainingSeatView"
+        app:layout_constraintStart_toStartOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/totalSeat"
         app:layout_constraintBottom_toTopOf="@id/addressTextView"/>
@@ -86,6 +99,7 @@
         android:maxLines="1"
         android:textColor="#808080"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
@@ -94,7 +108,8 @@
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.69" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
