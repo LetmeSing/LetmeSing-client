@@ -1,5 +1,5 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&color=E9ECE5&height=300&section=header&text=LetmeSing%20Client&fontSize=90&fontColor=8AA2A9)
---
+
 # Developer
 20180369 양원우
 
@@ -16,5 +16,7 @@ LetmeSing은 노래방 여석 관리/확인 기능을 중심으로 한 노래방
 - Spotify API를 활용한 노래 추천 기능
  
 ### LetmeSing APK 다운로드
-https://drive.google.com/drive/folders/11fqlF2mMq3VrSNRX38mEnZ6YQPMLEyN9?usp=drive_link
---
+#### https://drive.google.com/drive/folders/11fqlF2mMq3VrSNRX38mEnZ6YQPMLEyN9?usp=drive_link
+
+### LetmeSing Manual 다운로드
+#### https://drive.google.com/drive/folders/1k53XxwhLMhg5Hig_fMgrTfKcEcgDvYz7?usp=sharing
